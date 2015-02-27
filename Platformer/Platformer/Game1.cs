@@ -1,9 +1,16 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using FarseerPhysics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+
 
 namespace Platformer
 {
@@ -20,6 +27,8 @@ namespace Platformer
         private Matrix _view;
         private Vector2 _cameraPosition;
         private Vector2 _screenCenter;
+
+        public Dictionary<int, String> levelContent;
 
         public Game1()
         {
@@ -40,8 +49,9 @@ namespace Platformer
             _cameraPosition = Vector2.Zero;
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f, _graphics.GraphicsDevice.Viewport.Height / 2f);
             _batch = new SpriteBatch(_graphics.GraphicsDevice);
-            
 
+            levelContent = LevelReader.LoadListContent<String>(Content, "Levels");
+            
         }
 
         /// <summary>

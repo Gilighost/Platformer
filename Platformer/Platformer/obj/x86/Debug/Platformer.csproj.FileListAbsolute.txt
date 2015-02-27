@@ -8,3 +8,7 @@ C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debu
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.pdb
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference.cache
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Platformer.exe
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Platformer.pdb
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Levels\level1.txt
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Levels\level2.txt
