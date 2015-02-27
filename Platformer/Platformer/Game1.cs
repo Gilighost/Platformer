@@ -40,6 +40,7 @@ namespace Platformer
             _cameraPosition = Vector2.Zero;
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f, _graphics.GraphicsDevice.Viewport.Height / 2f);
             _batch = new SpriteBatch(_graphics.GraphicsDevice);
+            
 
         }
 

@@ -4,3 +4,7 @@ c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Pl
 c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.exe
 c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.pdb
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.exe
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.pdb
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference.cache
+C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt

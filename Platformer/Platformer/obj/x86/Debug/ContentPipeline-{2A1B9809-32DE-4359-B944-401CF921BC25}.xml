@@ -8,10 +8,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\PlatformerContent\</RootDirectory>
-      <LoggerRootDirectory>c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\</LoggerRootDirectory>
-      <IntermediateDirectory>c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\Platformer\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\PlatformerContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
