@@ -1,4 +1,5 @@
 Content\Images\block.xnb
-Content\Levels\level1.txt
+Content\Images\record_98px.xnb
 Content\Levels\level2.txt
 Content\Levels\level3.txt
+Content\Levels\level1.txt

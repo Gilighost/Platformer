@@ -10,6 +10,15 @@
       <Output>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb</Output>
       <Time>2015-03-01T16:12:47.8711981-06:00</Time>
     </Item>
+    <Item>
+      <Source>Images\record_98px.png</Source>
+      <Name>Images\record_98px</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb</Output>
+      <Time>2015-03-01T14:01:43.4613574-06:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{2A1B9809-32DE-4359-B944-401CF921BC25}</ContentProjectGUID>

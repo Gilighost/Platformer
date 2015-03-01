@@ -26,6 +26,8 @@ namespace Platformer
 
         private List<Block> blocks;
 
+        private Player player;
+
         private World _world;
 
         // Simple camera controls
@@ -45,9 +47,11 @@ namespace Platformer
 
             //Create a world with gravity.
             _world = new World(new Vector2(0, 9.82f));
+            player = null;
 
             blocks = new List<Block>();
         }
+
 
         protected override void LoadContent()
         {
@@ -63,6 +67,8 @@ namespace Platformer
             //then creates a dictionary pairing each jagged array with an int key
             LevelReader.LoadLevelContent<String>(Content, "Levels");
 
+            
+
             // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
             // 1 meters equals 64 pixels here
             ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
@@ -77,9 +83,13 @@ namespace Platformer
         {
             HandleGamePad();
             HandleKeyboard();
-
+            if(player != null)
+            {
+                player.getPlayerMovement();
+            }
             //We update the world
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
 
             base.Update(gameTime);
         }
@@ -96,7 +106,6 @@ namespace Platformer
                 _oldPadState = padState;
             }
         }
-
         private void HandleKeyboard()
         {
             KeyboardState state = Keyboard.GetState();
@@ -105,12 +114,18 @@ namespace Platformer
             if (state.IsKeyDown(Keys.L) && !(_oldKeyState.IsKeyDown(Keys.L)))
             {
                 blocks.Clear();
+                
                 int insertKeyHere = 3;
                 for (int i = 0; i < LevelReader.levelContent[insertKeyHere].Length; i++) //lines
                 {
                     for (int j = 0; j < LevelReader.levelContent[insertKeyHere][i].Length; j++) //characters
                     {
-                        //LevelReader.levelContent[insertKeyHere][i][j] = 'O';
+
+                        if (LevelReader.levelContent[insertKeyHere][i][j] == 'P')
+                        {
+                            player = new Player(_world, Content, new Vector2(j, i));
+                        }
+
                         if (LevelReader.levelContent[insertKeyHere][i][j] == '#')
                         {
                             Block block = new Block(_world, blockSprite, new Vector2(j,i));
@@ -123,17 +138,17 @@ namespace Platformer
 
             // Move camera
 
-            if (state.IsKeyDown(Keys.Left))
-                _cameraPosition.X += 3f;
+            if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.LeftShift))
+                _cameraPosition.X += 4f;
 
-            if (state.IsKeyDown(Keys.Right))
-                _cameraPosition.X -= 3f;
+            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.LeftShift))
+                _cameraPosition.X -= 4f;
 
-            if (state.IsKeyDown(Keys.Up))
-                _cameraPosition.Y += 3f;
+            if (state.IsKeyDown(Keys.Up) && state.IsKeyDown(Keys.LeftShift))
+                _cameraPosition.Y += 4f;
 
-            if (state.IsKeyDown(Keys.Down))
-                _cameraPosition.Y -= 3f;
+            if (state.IsKeyDown(Keys.Down) && state.IsKeyDown(Keys.LeftShift))
+                _cameraPosition.Y -= 4f;
 
             _view = Matrix.CreateTranslation(new Vector3(_cameraPosition - _screenCenter, 0f)) * Matrix.CreateTranslation(new Vector3(_screenCenter, 0f));
 
@@ -158,7 +173,11 @@ namespace Platformer
             {
                 _batch.Draw(block.Sprite, ConvertUnits.ToDisplayUnits(block.Origin), null, Color.White, block.Rotation, block.Origin, 1f, SpriteEffects.None, 0f);
             }
-
+            if (player != null)
+            {
+                player.Draw(_batch);
+            }
+            
             _batch.End();
 
             base.Draw(gameTime);
