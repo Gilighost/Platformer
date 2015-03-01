@@ -22,6 +22,10 @@ namespace Platformer
         private KeyboardState _oldKeyState;
         private GamePadState _oldPadState;
 
+        private Texture2D blockSprite;
+
+        private List<Block> blocks;
+
         private World _world;
 
         // Simple camera controls
@@ -41,6 +45,8 @@ namespace Platformer
 
             //Create a world with gravity.
             _world = new World(new Vector2(0, 9.82f));
+
+            blocks = new List<Block>();
         }
 
         protected override void LoadContent()
@@ -51,9 +57,15 @@ namespace Platformer
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f, _graphics.GraphicsDevice.Viewport.Height / 2f);
             _batch = new SpriteBatch(_graphics.GraphicsDevice);
 
+            blockSprite = Content.Load<Texture2D>(@"Images\block");
+
             //LevelReader finds all files in Content/Levels and parses each file into a jagged char array,
             //then creates a dictionary pairing each jagged array with an int key
-            LevelReader.LoadLevelContent<String>(Content, "Levels");    
+            LevelReader.LoadLevelContent<String>(Content, "Levels");
+
+            // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
+            // 1 meters equals 64 pixels here
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
         }
 
         /// <summary>
@@ -90,14 +102,20 @@ namespace Platformer
             KeyboardState state = Keyboard.GetState();
 
             //test code for loading a map
-            if (state.IsKeyDown(Keys.L))
+            if (state.IsKeyDown(Keys.L) && !(_oldKeyState.IsKeyDown(Keys.L)))
             {
-                int insertKeyHere = 1;
+                blocks.Clear();
+                int insertKeyHere = 3;
                 for (int i = 0; i < LevelReader.levelContent[insertKeyHere].Length; i++) //lines
                 {
                     for (int j = 0; j < LevelReader.levelContent[insertKeyHere][i].Length; j++) //characters
                     {
-                        LevelReader.levelContent[insertKeyHere][i][j] = 'O';
+                        //LevelReader.levelContent[insertKeyHere][i][j] = 'O';
+                        if (LevelReader.levelContent[insertKeyHere][i][j] == '#')
+                        {
+                            Block block = new Block(_world, blockSprite, new Vector2(j,i));
+                            blocks.Add(block);
+                        }
                     }
                 }
                
@@ -106,16 +124,16 @@ namespace Platformer
             // Move camera
 
             if (state.IsKeyDown(Keys.Left))
-                _cameraPosition.X += 1.5f;
+                _cameraPosition.X += 3f;
 
             if (state.IsKeyDown(Keys.Right))
-                _cameraPosition.X -= 1.5f;
+                _cameraPosition.X -= 3f;
 
             if (state.IsKeyDown(Keys.Up))
-                _cameraPosition.Y += 1.5f;
+                _cameraPosition.Y += 3f;
 
             if (state.IsKeyDown(Keys.Down))
-                _cameraPosition.Y -= 1.5f;
+                _cameraPosition.Y -= 3f;
 
             _view = Matrix.CreateTranslation(new Vector3(_cameraPosition - _screenCenter, 0f)) * Matrix.CreateTranslation(new Vector3(_screenCenter, 0f));
 
@@ -135,6 +153,11 @@ namespace Platformer
 
             //Draw circle and ground
             _batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _view);
+
+            foreach (Block block in blocks)
+            {
+                _batch.Draw(block.Sprite, ConvertUnits.ToDisplayUnits(block.Origin), null, Color.White, block.Rotation, block.Origin, 1f, SpriteEffects.None, 0f);
+            }
 
             _batch.End();
 
