@@ -16,6 +16,7 @@ namespace Platformer
 {
     public class Game1 : Game
     {
+        #region Private Members
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _batch;
         private KeyboardState _oldKeyState;
@@ -28,7 +29,7 @@ namespace Platformer
         private Vector2 _cameraPosition;
         private Vector2 _screenCenter;
 
-        public Dictionary<int, String> levelContent;
+        #endregion
 
         public Game1()
         {
@@ -50,8 +51,9 @@ namespace Platformer
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f, _graphics.GraphicsDevice.Viewport.Height / 2f);
             _batch = new SpriteBatch(_graphics.GraphicsDevice);
 
-            levelContent = LevelReader.LoadListContent<String>(Content, "Levels");
-            
+            //LevelReader finds all files in Content/Levels and parses each file into a jagged char array,
+            //then creates a dictionary pairing each jagged array with an int key
+            LevelReader.LoadLevelContent<String>(Content, "Levels");    
         }
 
         /// <summary>
@@ -86,6 +88,20 @@ namespace Platformer
         private void HandleKeyboard()
         {
             KeyboardState state = Keyboard.GetState();
+
+            //test code for loading a map
+            if (state.IsKeyDown(Keys.L))
+            {
+                int insertKeyHere = 1;
+                for (int i = 0; i < LevelReader.levelContent[insertKeyHere].Length; i++) //lines
+                {
+                    for (int j = 0; j < LevelReader.levelContent[insertKeyHere][i].Length; j++) //characters
+                    {
+                        LevelReader.levelContent[insertKeyHere][i][j] = 'O';
+                    }
+                }
+               
+            }
 
             // Move camera
 
