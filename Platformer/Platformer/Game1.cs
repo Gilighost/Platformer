@@ -138,16 +138,16 @@ namespace Platformer
 
             // Move camera
 
-            if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.LeftShift))
+            if (state.IsKeyDown(Keys.A))
                 _cameraPosition.X += 4f;
 
-            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.LeftShift))
+            if (state.IsKeyDown(Keys.D))
                 _cameraPosition.X -= 4f;
 
-            if (state.IsKeyDown(Keys.Up) && state.IsKeyDown(Keys.LeftShift))
+            if (state.IsKeyDown(Keys.W))
                 _cameraPosition.Y += 4f;
 
-            if (state.IsKeyDown(Keys.Down) && state.IsKeyDown(Keys.LeftShift))
+            if (state.IsKeyDown(Keys.S))
                 _cameraPosition.Y -= 4f;
 
             _view = Matrix.CreateTranslation(new Vector3(_cameraPosition - _screenCenter, 0f)) * Matrix.CreateTranslation(new Vector3(_screenCenter, 0f));
