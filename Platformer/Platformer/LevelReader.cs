@@ -13,14 +13,23 @@ using Microsoft.Xna.Framework.Content;
 //http://stackoverflow.com/questions/12914002/how-to-load-all-files-in-a-folder-with-xna
 
 
-namespace Platformer 
+namespace Platformer
 {
-    public static class LevelReader
+    class LevelReader
     {
 
         public static Dictionary<int, char[][]> levelContent;
-        
-        public static void LoadLevelContent<T>(this ContentManager contentManager, string contentFolder)
+
+        public List<Component> Components { get; private set; }
+
+        public static readonly LevelReader Levels = new LevelReader();
+
+        private LevelReader()
+        {
+
+        }
+
+        public void LoadContent(ContentManager contentManager, string contentFolder)
         {
             DirectoryInfo dir = new DirectoryInfo(contentManager.RootDirectory + @"\" + contentFolder);
             if (!dir.Exists)
@@ -40,7 +49,7 @@ namespace Platformer
                 {
                     symbols[counter] = new char[line.Length];
                     symbols[counter] = line.ToArray();
-                    
+
                     counter++;
                 }
                 levelContent.Add(key, symbols);
@@ -48,28 +57,35 @@ namespace Platformer
             }
         }
 
-        public static List<Component> ReadInLevelComponents(World world, int levelKey)
+        public List<Component> ReadInLevelComponents(World world, int levelKey)
         {
-            List<Component> levelComponents = new List<Component>();
+            Components = new List<Component>();
             for (int i = 0; i < LevelReader.levelContent[levelKey].Length; i++) //lines
             {
-                for (int j = 0; j < LevelReader.levelContent[levelKey][i].Length; j++) //characters
+                for (int j = 0; j < levelContent[levelKey][i].Length; j++) //characters
                 {
 
-                    if (LevelReader.levelContent[levelKey][i][j] == 'P')
+                    if (levelContent[levelKey][i][j] == 'P')
                     {
-                        Player player = new Player(world, Game1.playerTexture, new Vector2(j, i));
-                        levelComponents.Add(player);
+                        Component player = new Player(CalculateSimPosition(j, i));
+                        Components.Add(player);
                     }
 
-                    if (LevelReader.levelContent[levelKey][i][j] == '#')
+                    if (levelContent[levelKey][i][j] == '#')
                     {
-                        Component block = new Block(world, Game1.blockTexture, new Vector2(j,i));
-                        levelComponents.Add(block);
+                        Component block = new Block(CalculateSimPosition(j, i));
+                        Components.Add(block);
                     }
                 }
             }
-            return levelComponents;
+            return Components;
         }
+
+        public Vector2 CalculateSimPosition(int column, int row)
+        {
+            Vector2 result = new Vector2((float)(column * 64), (float)(row * 64));
+            return ConvertUnits.ToSimUnits(result);
+        }
+
     }
 }

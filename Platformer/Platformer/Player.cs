@@ -1,83 +1,63 @@
-﻿using FarseerPhysics;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Factories;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using FarseerPhysics;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 
 namespace Platformer
 {
-
     class Player : Component
     {
-        //Constants
-        //*******************************************************
-        private const String playerSpriteName = @"Images/record_98px";
-        //*******************************************************
-
-        private Body circleBody;
-        private Texture2D circleSprite;
-        private Vector2 circleOrigin;
-        private Vector2 circlePosition;
-
-
-        //movement
         private KeyboardState oldKeyState;
-
-
-        public Player(World world, Texture2D texture, Vector2 position)
+        public Player(Vector2 position)
         {
-            circlePosition = position;
-
-
-            circleSprite = texture;
-            circleOrigin = new Vector2(circleSprite.Width / 2f, circleSprite.Height / 2f);
-            circleBody = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(96 / 2f), 1f, circlePosition);
-            circleBody.BodyType = BodyType.Dynamic;
-
-            circleBody.Restitution = 0.3f;
-            circleBody.Friction = 0.5f;
+            Position = position;
         }
 
-        public override void Update(GameTime gametime)
+        public override void CreateComponent(World world, Texture2D texture)
         {
-            getPlayerMovement();
-            
-            base.Update(gametime);
-        }
+            Texture = texture;
 
-        public void getPlayerMovement()
+            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
+
+            Body = BodyFactory.CreateCircle(world, Texture.Height / 2, 1f, Position);
+            Body.BodyType = BodyType.Dynamic;
+
+            Body.Restitution = 0.3f;
+            Body.Friction = 0.5f;
+        }
+        public override void Update(VisualizationData visData)
         {
+            // get movement
+
             KeyboardState state = Keyboard.GetState();
-            circleBody.Awake = true;
+            Body.Awake = true;
 
             if (state.IsKeyDown(Keys.Left))
-                circleBody.ApplyTorque(-5);
+                Body.ApplyTorque(-5);
 
             if (state.IsKeyDown(Keys.Right))
-                circleBody.ApplyTorque(5);
+                Body.ApplyTorque(5);
 
             if (state.IsKeyDown(Keys.Up) && oldKeyState.IsKeyUp(Keys.Up))
-                circleBody.ApplyLinearImpulse(new Vector2(0, -5));
+                Body.ApplyLinearImpulse(new Vector2(0, -5));
 
             oldKeyState = state;
 
-        }
-
-        public void LoadContent(ContentManager Content, World world)
-        {
-
-           
+            base.Update(visData);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(circleSprite, ConvertUnits.ToDisplayUnits(circleBody.Position), null, Color.White, circleBody.Rotation, circleOrigin, 1f, SpriteEffects.None, 0f);
+            base.Draw(spriteBatch);
         }
     }
 }

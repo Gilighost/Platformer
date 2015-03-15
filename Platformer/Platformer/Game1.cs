@@ -1,91 +1,159 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using FarseerPhysics;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
-
+using Microsoft.Xna.Framework.Media;
+using FarseerPhysics;
+using FarseerPhysics.Dynamics;
 
 namespace Platformer
 {
-    public class Game1 : Game
+    /// <summary>
+    /// This is the main type for your game
+    /// </summary>
+    public class Game1 : Microsoft.Xna.Framework.Game
     {
-        #region Private Members
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch spriteBatch;
-        private KeyboardState oldKeyState;
-        private GamePadState oldPadState;
-
-        private List<Component> components;
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
 
         private World world;
 
-        public static Texture2D blockTexture;
-        public static Texture2D playerTexture;
+        private MouseState lastMouseState;
 
-        public static float HalfScreenWidth { get; private set; }
+        private KeyboardState lastKeyBoardState;
 
         private int levelKey;
 
-        #endregion
+        private Texture2D playerTexture;
+        private Texture2D blockTexture;
+
+        public VisualizationData visData;
+
+        public static float HalfScreenWidth { get; private set; }
+        public static float HalfScreenHeight { get; private set; }
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 480;
+            this.IsMouseVisible = true;
 
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            //Create a world with gravity.
             world = new World(new Vector2(0, 9.82f));
+
+
         }
 
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
         protected override void Initialize()
         {
-            levelKey = 1;
+            // TODO: Add your initialization logic here
 
-            HalfScreenWidth = _graphics.GraphicsDevice.Viewport.Width / 2;
-            components = new List<Component>();
+            Vector2 topLeft = ConvertUnits.ToSimUnits(new Vector2(0, 0));
+            Vector2 bottomRight = ConvertUnits.ToSimUnits(
+                new Vector2(GraphicsDevice.Viewport.Width,
+                    GraphicsDevice.Viewport.Height));
+
+            HalfScreenWidth = GraphicsDevice.Viewport.Width / 2;
+            HalfScreenHeight = GraphicsDevice.Viewport.Height / 2;
+
+            levelKey = 1;
 
             base.Initialize();
         }
 
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
         protected override void LoadContent()
         {
+            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //LevelReader finds all files in Content/Levels and parses each file into a jagged char array,
-            //then creates a dictionary pairing each jagged array with an int key
-            LevelReader.LoadLevelContent<String>(Content, "Levels");
 
-            // Images
-
-            blockTexture = Content.Load<Texture2D>(@"Images\block");
             playerTexture = Content.Load<Texture2D>(@"Images\record_98px");
+            blockTexture = Content.Load<Texture2D>(@"Images\block");
 
-            // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
-            // 1 meters equals 64 pixels here
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
+            LevelReader.Levels.LoadContent(Content, "Levels");
         }
 
-        private void CreateGameComponents(int levelKey)
+        private void CreateGameComponents()
         {
             Camera.Current.StopTracking();
-            components.Clear();
-            components = LevelReader.ReadInLevelComponents(world, levelKey);
-            foreach (Component component in components)
+
+            // Clear the world of previous components
+            world.Clear();
+
+            foreach (Component component in LevelReader.Levels.Components)
             {
                 if (component is Player)
                 {
+                    component.CreateComponent(world, playerTexture);
                     Camera.Current.StartTracking(component.Body);
                 }
+                if (component is Block)
+                {
+                    component.CreateComponent(world, blockTexture);
+                }
+                //todo:  add more stuff
             }
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// all content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+        }
+
+        private void HandleKeyPadInput()
+        {
+            KeyboardState keyBoardState = Keyboard.GetState();
+
+            // set levelKey 
+
+            if (keyBoardState.IsKeyDown(Keys.D1))
+            {
+                levelKey = 1;
+            }
+            if (keyBoardState.IsKeyDown(Keys.D2))
+            {
+                levelKey = 2;
+            }
+            if (keyBoardState.IsKeyDown(Keys.D3))
+            {
+                levelKey = 3;
+            }
+
+
+            // Load new level
+
+            if (keyBoardState.IsKeyDown(Keys.L) && !lastKeyBoardState.IsKeyDown(Keys.L))
+            {
+                LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+                CreateGameComponents();
+            }
+
+            lastKeyBoardState = keyBoardState;
+        }
+
+        private void HandleMouseInput()
+        {
+            MouseState mouseState = Mouse.GetState();
+
+            lastMouseState = mouseState;
         }
 
         /// <summary>
@@ -95,64 +163,28 @@ namespace Platformer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            HandleGamePad();
-            HandleKeyboard();
-
-            if (components != null)
+            if (MediaPlayer.State == MediaState.Playing)
             {
-                foreach(Component component in components)
+                MediaPlayer.GetVisualizationData(visData);
+            }
+
+            HandleMouseInput();
+            HandleKeyPadInput();
+
+            if (LevelReader.Levels.Components != null)
+            {
+                foreach (Component component in LevelReader.Levels.Components)
                 {
-                    component.Update(gameTime);
+                    component.Update(visData);
                 }
             }
-
-            //We update the world
+            // Update Farseer world
             world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
+            // Allow camera to update
+            Camera.Current.Update();
 
             base.Update(gameTime);
-        }
-
-        private void HandleGamePad()
-        {
-            GamePadState padState = GamePad.GetState(0);
-
-            if (padState.IsConnected)
-            {
-                if (padState.Buttons.Back == ButtonState.Pressed)
-                    Exit();
-
-                oldPadState = padState;
-            }
-        }
-        private void HandleKeyboard()
-        {
-            KeyboardState state = Keyboard.GetState();
-
-            // Rudimentary level select
-
-            if (state.IsKeyDown(Keys.D1))
-                levelKey = 1;
-
-            if (state.IsKeyDown(Keys.D1))
-                levelKey = 2;
-
-            if (state.IsKeyDown(Keys.D1))
-                levelKey = 3;
-
-            // Load level onto screen
-
-            if (state.IsKeyDown(Keys.L) && !oldKeyState.IsKeyDown(Keys.L))
-            {
-                CreateGameComponents(levelKey);
-            }
-
-            // Exit
-
-            if (state.IsKeyDown(Keys.Escape))
-                Exit();
-
-            oldKeyState = state;
         }
 
         /// <summary>
@@ -163,12 +195,12 @@ namespace Platformer
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //Draw circle and ground
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Camera.Current.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
+                null, Camera.Current.TransformationMatrix);
 
-            if (components != null)
+            if (LevelReader.Levels.Components != null)
             {
-                foreach (Component component in components)
+                foreach (Component component in LevelReader.Levels.Components)
                 {
                     component.Draw(spriteBatch);
                 }
