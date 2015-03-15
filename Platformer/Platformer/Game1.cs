@@ -18,22 +18,20 @@ namespace Platformer
     {
         #region Private Members
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _batch;
-        private KeyboardState _oldKeyState;
-        private GamePadState _oldPadState;
+        private SpriteBatch spriteBatch;
+        private KeyboardState oldKeyState;
+        private GamePadState oldPadState;
 
-        private Texture2D blockSprite;
+        private List<Component> components;
 
-        private List<Block> blocks;
+        private World world;
 
-        private Player player;
+        public static Texture2D blockTexture;
+        public static Texture2D playerTexture;
 
-        private World _world;
+        public static float HalfScreenWidth { get; private set; }
 
-        // Simple camera controls
-        private Matrix _view;
-        private Vector2 _cameraPosition;
-        private Vector2 _screenCenter;
+        private int levelKey;
 
         #endregion
 
@@ -46,32 +44,48 @@ namespace Platformer
             Content.RootDirectory = "Content";
 
             //Create a world with gravity.
-            _world = new World(new Vector2(0, 9.82f));
-            player = null;
-
-            blocks = new List<Block>();
+            world = new World(new Vector2(0, 9.82f));
         }
 
+        protected override void Initialize()
+        {
+            levelKey = 1;
+
+            HalfScreenWidth = _graphics.GraphicsDevice.Viewport.Width / 2;
+            components = new List<Component>();
+
+            base.Initialize();
+        }
 
         protected override void LoadContent()
         {
-            // Initialize camera controls
-            _view = Matrix.Identity;
-            _cameraPosition = Vector2.Zero;
-            _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f, _graphics.GraphicsDevice.Viewport.Height / 2f);
-            _batch = new SpriteBatch(_graphics.GraphicsDevice);
-
-            blockSprite = Content.Load<Texture2D>(@"Images\block");
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             //LevelReader finds all files in Content/Levels and parses each file into a jagged char array,
             //then creates a dictionary pairing each jagged array with an int key
             LevelReader.LoadLevelContent<String>(Content, "Levels");
 
-            
+            // Images
+
+            blockTexture = Content.Load<Texture2D>(@"Images\block");
+            playerTexture = Content.Load<Texture2D>(@"Images\record_98px");
 
             // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
             // 1 meters equals 64 pixels here
             ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
+        }
+
+        private void CreateGameComponents(int levelKey)
+        {
+            Camera.Current.StopTracking();
+            components.Clear();
+            components = LevelReader.ReadInLevelComponents(world, levelKey);
+            foreach (Component component in components)
+            {
+                if (component is Player)
+                {
+                    Camera.Current.StartTracking(component.Body);
+                }
+            }
         }
 
         /// <summary>
@@ -83,12 +97,17 @@ namespace Platformer
         {
             HandleGamePad();
             HandleKeyboard();
-            if(player != null)
+
+            if (components != null)
             {
-                player.getPlayerMovement();
+                foreach(Component component in components)
+                {
+                    component.Update(gameTime);
+                }
             }
+
             //We update the world
-            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
 
             base.Update(gameTime);
@@ -103,59 +122,37 @@ namespace Platformer
                 if (padState.Buttons.Back == ButtonState.Pressed)
                     Exit();
 
-                _oldPadState = padState;
+                oldPadState = padState;
             }
         }
         private void HandleKeyboard()
         {
             KeyboardState state = Keyboard.GetState();
 
-            //test code for loading a map
-            if (state.IsKeyDown(Keys.L) && !(_oldKeyState.IsKeyDown(Keys.L)))
+            // Rudimentary level select
+
+            if (state.IsKeyDown(Keys.D1))
+                levelKey = 1;
+
+            if (state.IsKeyDown(Keys.D1))
+                levelKey = 2;
+
+            if (state.IsKeyDown(Keys.D1))
+                levelKey = 3;
+
+            // Load level onto screen
+
+            if (state.IsKeyDown(Keys.L) && !oldKeyState.IsKeyDown(Keys.L))
             {
-                blocks.Clear();
-                
-                int insertKeyHere = 3;
-                for (int i = 0; i < LevelReader.levelContent[insertKeyHere].Length; i++) //lines
-                {
-                    for (int j = 0; j < LevelReader.levelContent[insertKeyHere][i].Length; j++) //characters
-                    {
-
-                        if (LevelReader.levelContent[insertKeyHere][i][j] == 'P')
-                        {
-                            player = new Player(_world, Content, new Vector2(j, i));
-                        }
-
-                        if (LevelReader.levelContent[insertKeyHere][i][j] == '#')
-                        {
-                            Block block = new Block(_world, blockSprite, new Vector2(j,i));
-                            blocks.Add(block);
-                        }
-                    }
-                }
-               
+                CreateGameComponents(levelKey);
             }
 
-            // Move camera
-
-            if (state.IsKeyDown(Keys.A))
-                _cameraPosition.X += 4f;
-
-            if (state.IsKeyDown(Keys.D))
-                _cameraPosition.X -= 4f;
-
-            if (state.IsKeyDown(Keys.W))
-                _cameraPosition.Y += 4f;
-
-            if (state.IsKeyDown(Keys.S))
-                _cameraPosition.Y -= 4f;
-
-            _view = Matrix.CreateTranslation(new Vector3(_cameraPosition - _screenCenter, 0f)) * Matrix.CreateTranslation(new Vector3(_screenCenter, 0f));
+            // Exit
 
             if (state.IsKeyDown(Keys.Escape))
                 Exit();
 
-            _oldKeyState = state;
+            oldKeyState = state;
         }
 
         /// <summary>
@@ -167,18 +164,17 @@ namespace Platformer
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //Draw circle and ground
-            _batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _view);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Camera.Current.TransformationMatrix);
 
-            foreach (Block block in blocks)
+            if (components != null)
             {
-                _batch.Draw(block.Sprite, ConvertUnits.ToDisplayUnits(block.Origin), null, Color.White, block.Rotation, block.Origin, 1f, SpriteEffects.None, 0f);
+                foreach (Component component in components)
+                {
+                    component.Draw(spriteBatch);
+                }
             }
-            if (player != null)
-            {
-                player.Draw(_batch);
-            }
-            
-            _batch.End();
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

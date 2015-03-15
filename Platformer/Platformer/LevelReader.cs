@@ -47,5 +47,29 @@ namespace Platformer
                 key++;
             }
         }
+
+        public static List<Component> ReadInLevelComponents(World world, int levelKey)
+        {
+            List<Component> levelComponents = new List<Component>();
+            for (int i = 0; i < LevelReader.levelContent[levelKey].Length; i++) //lines
+            {
+                for (int j = 0; j < LevelReader.levelContent[levelKey][i].Length; j++) //characters
+                {
+
+                    if (LevelReader.levelContent[levelKey][i][j] == 'P')
+                    {
+                        Player player = new Player(world, Game1.playerTexture, new Vector2(j, i));
+                        levelComponents.Add(player);
+                    }
+
+                    if (LevelReader.levelContent[levelKey][i][j] == '#')
+                    {
+                        Component block = new Block(world, Game1.blockTexture, new Vector2(j,i));
+                        levelComponents.Add(block);
+                    }
+                }
+            }
+            return levelComponents;
+        }
     }
 }

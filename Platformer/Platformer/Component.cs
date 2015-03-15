@@ -12,19 +12,20 @@ using System.Text;
 
 namespace Platformer
 {
-    public class Block : Component
+    public class Component
     {
-        public Block(World world, Texture2D texture, Vector2 position)
+        public virtual Body Body { get; set; }
+
+        public virtual Texture2D Texture { get; set; }
+
+        public virtual Vector2 Origin { get; set; }
+
+        public virtual void Update(GameTime gametime)
         {
-            Texture = texture;
 
-            Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(texture.Width),
-                ConvertUnits.ToSimUnits(texture.Height), 1f, position);
-
-            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
                 ConvertUnits.ToDisplayUnits(Body.Position),

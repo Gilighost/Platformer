@@ -13,7 +13,7 @@ using System.Text;
 namespace Platformer
 {
 
-    class Player
+    class Player : Component
     {
         //Constants
         //*******************************************************
@@ -28,20 +28,27 @@ namespace Platformer
 
         //movement
         private KeyboardState oldKeyState;
-        
 
-        public Player(World world, ContentManager Content, Vector2 position)
+
+        public Player(World world, Texture2D texture, Vector2 position)
         {
             circlePosition = position;
 
 
-            circleSprite = Content.Load<Texture2D>(playerSpriteName);
+            circleSprite = texture;
             circleOrigin = new Vector2(circleSprite.Width / 2f, circleSprite.Height / 2f);
             circleBody = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(96 / 2f), 1f, circlePosition);
             circleBody.BodyType = BodyType.Dynamic;
 
             circleBody.Restitution = 0.3f;
             circleBody.Friction = 0.5f;
+        }
+
+        public override void Update(GameTime gametime)
+        {
+            getPlayerMovement();
+            
+            base.Update(gametime);
         }
 
         public void getPlayerMovement()
@@ -68,7 +75,7 @@ namespace Platformer
            
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(circleSprite, ConvertUnits.ToDisplayUnits(circleBody.Position), null, Color.White, circleBody.Rotation, circleOrigin, 1f, SpriteEffects.None, 0f);
         }
