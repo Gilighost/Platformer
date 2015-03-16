@@ -67,25 +67,18 @@ namespace Platformer
 
                     if (levelContent[levelKey][i][j] == 'P')
                     {
-                        Component player = new Player(CalculateSimPosition(j, i));
+                        Component player = new Player(new Vector2(j,i));
                         Components.Add(player);
                     }
 
                     if (levelContent[levelKey][i][j] == '#')
                     {
-                        Component block = new Block(CalculateSimPosition(j, i));
+                        Component block = new Block(new Vector2(j, i));
                         Components.Add(block);
                     }
                 }
             }
             return Components;
         }
-
-        public Vector2 CalculateSimPosition(int column, int row)
-        {
-            Vector2 result = new Vector2((float)(column * 64), (float)(row * 64));
-            return ConvertUnits.ToSimUnits(result);
-        }
-
     }
 }

@@ -44,12 +44,28 @@ namespace Platformer
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) !=
                     halfScreenWidth)
                 {
-                    offset.X = ConvertUnits.ToDisplayUnits(trackingBody.Position.X) - halfScreenWidth;
+                    if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) > halfScreenWidth)
+                    {
+                        offset.X = ConvertUnits.ToDisplayUnits(trackingBody.Position.X) - halfScreenWidth;
+                    }
+                    else
+                    {
+                        offset.X = halfScreenWidth - ConvertUnits.ToDisplayUnits(trackingBody.Position.X);
+                    }
+                    
                 }
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) !=
                     halfScreenHeight)
                 {
-                    offset.Y = ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) - halfScreenHeight;
+                    if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) > halfScreenHeight)
+                    {
+                        offset.Y = ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) - halfScreenHeight;
+                    }
+                    else
+                    {
+                        offset.Y = halfScreenHeight - ConvertUnits.ToDisplayUnits(trackingBody.Position.Y);
+                    }
+
                 }
             }
 
@@ -65,13 +81,6 @@ namespace Platformer
         public void StopTracking()
         {
             trackingBody = null;
-        }
-
-        public Vector2 ScreenToSimulation(Vector2 mousePosition)
-        {
-            Vector2 simMousePosition = Vector2.Transform(mousePosition,
-                Matrix.Invert(TransformationMatrix));
-            return ConvertUnits.ToSimUnits(simMousePosition);
         }
     }
 }

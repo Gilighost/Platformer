@@ -59,6 +59,8 @@ namespace Platformer
         {
             // TODO: Add your initialization logic here
 
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
+
             Vector2 topLeft = ConvertUnits.ToSimUnits(new Vector2(0, 0));
             Vector2 bottomRight = ConvertUnits.ToSimUnits(
                 new Vector2(GraphicsDevice.Viewport.Width,

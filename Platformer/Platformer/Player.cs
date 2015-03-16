@@ -42,13 +42,13 @@ namespace Platformer
             Body.Awake = true;
 
             if (state.IsKeyDown(Keys.Left))
-                Body.ApplyTorque(-5);
+                Body.ApplyTorque(-10);
 
             if (state.IsKeyDown(Keys.Right))
-                Body.ApplyTorque(5);
+                Body.ApplyTorque(10);
 
             if (state.IsKeyDown(Keys.Up) && oldKeyState.IsKeyUp(Keys.Up))
-                Body.ApplyLinearImpulse(new Vector2(0, -5));
+                Body.ApplyLinearImpulse(new Vector2(0, -10));
 
             oldKeyState = state;
 
