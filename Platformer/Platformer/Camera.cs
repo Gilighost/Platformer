@@ -52,7 +52,7 @@ namespace Platformer
                     {
                         offset.X = halfScreenWidth - ConvertUnits.ToDisplayUnits(trackingBody.Position.X);
                     }
-                    
+
                 }
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) !=
                     halfScreenHeight)

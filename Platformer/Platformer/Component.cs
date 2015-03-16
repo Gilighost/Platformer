@@ -29,7 +29,7 @@ namespace Platformer
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture,
-                ConvertUnits.ToDisplayUnits(Body.Position),
+                ConvertUnits.ToDisplayUnits(Position),
                 null,
                 Color,
                 Body.Rotation,
@@ -42,11 +42,8 @@ namespace Platformer
         public virtual void CreateComponent(World world, Texture2D texture)
         {
             Texture = texture;
-
-            if (Color == null)
-            {
-                Color = Color.White;
-            }
+ 
+            Color = Color.White;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
