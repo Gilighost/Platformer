@@ -28,28 +28,12 @@ namespace Platformer
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture,
-                ConvertUnits.ToDisplayUnits(Position),
-                null,
-                Color,
-                Body.Rotation,
-                Origin,
-                1f,
-                SpriteEffects.None,
-                0f);
+            
         }
 
-        public virtual void CreateComponent(World world, Texture2D texture)
+        public virtual void BuildComponent(World world, Texture2D texture)
         {
-            Texture = texture;
- 
-            Color = Color.White;
 
-            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-
-            Body = BodyFactory.CreateRectangle(world,
-                 ConvertUnits.ToSimUnits(texture.Width),
-                 ConvertUnits.ToSimUnits(texture.Height), 1f, Position);
         }
 
         public virtual void Update(VisualizationData visData)

@@ -76,6 +76,12 @@ namespace Platformer
                         Component block = new Block(new Vector2(j, i));
                         Components.Add(block);
                     }
+
+                    if (levelContent[levelKey][i][j] == 'G')
+                    {
+                        Component goal = new Goal(new Vector2(j, i));
+                        Components.Add(goal);
+                    }
                 }
             }
             return Components;

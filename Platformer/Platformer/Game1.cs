@@ -89,7 +89,7 @@ namespace Platformer
             LevelReader.Levels.LoadContent(Content, "Levels");
         }
 
-        private void CreateGameComponents()
+        private void BuildGameComponents()
         {
             Camera.Current.StopTracking();
 
@@ -100,12 +100,17 @@ namespace Platformer
             {
                 if (component is Player)
                 {
-                    component.CreateComponent(world, playerTexture);
+                    component.BuildComponent(world, playerTexture);
                     Camera.Current.StartTracking(component.Body);
                 }
                 if (component is Block)
                 {
-                    component.CreateComponent(world, blockTexture);
+                    component.BuildComponent(world, blockTexture);
+                }
+                if (component is Goal)
+                {
+                    component.BuildComponent(world, playerTexture);//replace playerTexture with goalTexture
+                    Camera.Current.CenterPointTarget = component.Body.Position.X;
                 }
                 //todo:  add more stuff
             }
@@ -145,7 +150,7 @@ namespace Platformer
             if (keyBoardState.IsKeyDown(Keys.L) && !lastKeyBoardState.IsKeyDown(Keys.L))
             {
                 LevelReader.Levels.ReadInLevelComponents(world, levelKey);
-                CreateGameComponents();
+                BuildGameComponents();
             }
 
             lastKeyBoardState = keyBoardState;
@@ -195,7 +200,7 @@ namespace Platformer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.SlateGray);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, Camera.Current.TransformationMatrix);

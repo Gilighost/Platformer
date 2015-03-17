@@ -14,11 +14,11 @@ using FarseerPhysics.Factories;
 
 namespace Platformer
 {
-    class Block : Component
+    class Goal : Component
     {
-        public Block(Vector2 coordinates)
+         public Goal(Vector2 coordinates)
         {
-            Position = ConvertUnits.ToSimUnits(new Vector2(Position.X * 64, Position.Y * 64));  
+            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
         }
 
         public override void BuildComponent(World world, Texture2D texture)
@@ -34,6 +34,7 @@ namespace Platformer
 
             Color = Color.White;
 
+            Body.IsSensor = true;
         }
 
         public override void Update(VisualizationData visData)

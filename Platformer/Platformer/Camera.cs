@@ -16,12 +16,15 @@ namespace Platformer
     class Camera
     {
         // Distance away from the tracking body
-        private Vector2 offset;
+        private float offsetX;
 
         // Body to center the camera on
         private Body trackingBody;
 
         public Matrix TransformationMatrix { get; private set; }
+
+        // X value of the target
+        public float CenterPointTarget { get; set; }
 
         // Create a singleton
         public static readonly Camera Current = new Camera();
@@ -37,40 +40,20 @@ namespace Platformer
             if (trackingBody != null)
             {
                 float halfScreenWidth = Game1.HalfScreenWidth;
-                float halfScreenHeight = Game1.HalfScreenHeight;
 
                 // If tracking body is not located in the center
                 // of the view (half screen width + current offset)
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) !=
-                    halfScreenWidth)
+                    halfScreenWidth + offsetX)
                 {
-                    if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) > halfScreenWidth)
-                    {
-                        offset.X = ConvertUnits.ToDisplayUnits(trackingBody.Position.X) - halfScreenWidth;
-                    }
-                    else
-                    {
-                        offset.X = halfScreenWidth - ConvertUnits.ToDisplayUnits(trackingBody.Position.X);
-                    }
-
-                }
-                if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) !=
-                    halfScreenHeight)
-                {
-                    if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) > halfScreenHeight)
-                    {
-                        offset.Y = ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) - halfScreenHeight;
-                    }
-                    else
-                    {
-                        offset.Y = halfScreenHeight - ConvertUnits.ToDisplayUnits(trackingBody.Position.Y);
-                    }
-
+                    offsetX = MathHelper.Clamp(
+                        ConvertUnits.ToDisplayUnits(trackingBody.Position.X) -
+                        halfScreenWidth, 0, CenterPointTarget - halfScreenWidth);
                 }
             }
 
             // Move scene
-            TransformationMatrix = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
+            TransformationMatrix = Matrix.CreateTranslation(-offsetX, 0, 0);
         }
 
         public void StartTracking(Body body)
@@ -81,6 +64,13 @@ namespace Platformer
         public void StopTracking()
         {
             trackingBody = null;
+        }
+
+        public Vector2 ScreenToSimulation(Vector2 mousePosition)
+        {
+            Vector2 simMousePosition = Vector2.Transform(mousePosition,
+                Matrix.Invert(TransformationMatrix));
+            return ConvertUnits.ToSimUnits(simMousePosition);
         }
     }
 }

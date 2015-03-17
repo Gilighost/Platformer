@@ -17,22 +17,25 @@ namespace Platformer
     class Player : Component
     {
         private KeyboardState oldKeyState;
-        public Player(Vector2 position)
+        public Player(Vector2 coordinates)
         {
-            Position = position;
+            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
         }
 
-        public override void CreateComponent(World world, Texture2D texture)
+        public override void BuildComponent(World world, Texture2D texture)
         {
             Texture = texture;
 
-            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-
             Body = BodyFactory.CreateCircle(world, Texture.Height / 2, 1f, Position);
+            Body.Position = Position;
             Body.BodyType = BodyType.Dynamic;
 
             Body.Restitution = 0.3f;
             Body.Friction = 0.5f;
+            
+            Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
+
+            Color = Color.White;
         }
         public override void Update(VisualizationData visData)
         {
@@ -57,6 +60,16 @@ namespace Platformer
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(Texture,
+                 ConvertUnits.ToDisplayUnits(Body.Position),
+                 null,
+                 Color,
+                 Body.Rotation,
+                 Origin,
+                 1f,
+                 SpriteEffects.None,
+                 0f);
+            
             base.Draw(spriteBatch);
         }
     }

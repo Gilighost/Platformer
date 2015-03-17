@@ -79,6 +79,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Component.cs" />
+    <Compile Include="Goal.cs" />
     <Compile Include="LevelReader.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
