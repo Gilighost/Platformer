@@ -25,11 +25,11 @@ namespace Platformer
         {
             Texture = texture;
 
-            Body = BodyFactory.CreateRectangle(world, Texture.Width, Texture.Height, 1f, Position);
-            Body.SleepingAllowed = false;
-            Body.Position = Position;
+            Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(Texture.Width), ConvertUnits.ToSimUnits(Texture.Height), 1f, Position);
+            //Body.SleepingAllowed = false;
+            //Body.Position = Position;
             Body.BodyType = BodyType.Static;
-            Body.Friction = 0.5f;
+            Body.Friction = 1f;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 

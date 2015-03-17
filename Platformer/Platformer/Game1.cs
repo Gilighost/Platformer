@@ -220,7 +220,7 @@ namespace Platformer
             {
                 foreach (Component component in LevelReader.Levels.Components)
                 {
-                    component.Draw(spriteBatch);
+                     component.Draw(spriteBatch);
                 }
             }
 

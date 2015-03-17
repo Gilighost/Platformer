@@ -57,7 +57,7 @@ namespace Platformer
             }
         }
 
-        public List<Component> ReadInLevelComponents(World world, int levelKey)
+        public void ReadInLevelComponents(World world, int levelKey)
         {
             Components = new List<Component>();
             for (int i = 0; i < LevelReader.levelContent[levelKey].Length; i++) //lines
@@ -84,7 +84,6 @@ namespace Platformer
                     }
                 }
             }
-            return Components;
         }
     }
 }

@@ -26,12 +26,12 @@ namespace Platformer
         {
             Texture = texture;
 
-            Body = BodyFactory.CreateCircle(world, Texture.Height / 2, 1f, Position);
-            Body.SleepingAllowed = false;
+            Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(Texture.Height / 2), 1f, Position);
+            //Body.SleepingAllowed = false;
             Body.BodyType = BodyType.Dynamic;
 
-            Body.Restitution = 0.3f;
-            Body.Friction = 0.5f;
+            Body.Restitution = 0.1f;
+            Body.Friction = 1f;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
@@ -42,16 +42,16 @@ namespace Platformer
             // get movement
 
             KeyboardState state = Keyboard.GetState();
-            Body.Awake = true;
+            //Body.Awake = true;
 
             if (state.IsKeyDown(Keys.Left))
-                Body.ApplyTorque(-10);
+                Body.ApplyTorque(-5);
 
             if (state.IsKeyDown(Keys.Right))
-                Body.ApplyTorque(10);
+                Body.ApplyTorque(5);
 
             if (state.IsKeyDown(Keys.Up) && oldKeyState.IsKeyUp(Keys.Up))
-                Body.ApplyLinearImpulse(new Vector2(0, -10));
+                Body.ApplyLinearImpulse(new Vector2(0, -5));
 
             oldKeyState = state;
 
