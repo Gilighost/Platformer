@@ -34,6 +34,8 @@ namespace Platformer
 
         public VisualizationData visData;
 
+        public bool resetPlayerPosition;//////////////////////////////////////////////////
+
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
 
@@ -58,8 +60,6 @@ namespace Platformer
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
 
             Vector2 topLeft = ConvertUnits.ToSimUnits(new Vector2(0, 0));
             Vector2 bottomRight = ConvertUnits.ToSimUnits(
@@ -153,6 +153,12 @@ namespace Platformer
                 BuildGameComponents();
             }
 
+            resetPlayerPosition = false;//////////////////////////////////////////////////////////////
+            if (keyBoardState.IsKeyDown(Keys.S) && !lastKeyBoardState.IsKeyDown(Keys.S))//////////////
+            {/////////////////////////////////////////////////////////////////////////////////////////
+                resetPlayerPosition = true;///////////////////////////////////////////////////////////
+            }/////////////////////////////////////////////////////////////////////////////////////////
+
             lastKeyBoardState = keyBoardState;
         }
 
@@ -183,6 +189,11 @@ namespace Platformer
                 foreach (Component component in LevelReader.Levels.Components)
                 {
                     component.Update(visData);
+
+                    if (component is Player && resetPlayerPosition)///////////////////
+                    {/////////////////////////////////////////////////////////////////
+                        component.Body.Position = component.Position;/////////////////
+                    }/////////////////////////////////////////////////////////////////
                 }
             }
             // Update Farseer world

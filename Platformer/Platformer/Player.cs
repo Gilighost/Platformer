@@ -27,7 +27,7 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateCircle(world, Texture.Height / 2, 1f, Position);
-            Body.Position = Position;
+            Body.SleepingAllowed = false;
             Body.BodyType = BodyType.Dynamic;
 
             Body.Restitution = 0.3f;

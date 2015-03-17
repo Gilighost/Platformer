@@ -26,7 +26,7 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateRectangle(world, Texture.Width, Texture.Height, 1f, Position);
-            Body.Position = Position;
+            Body.SleepingAllowed = false;
             Body.BodyType = BodyType.Static;
             Body.Friction = 0.5f;
 
