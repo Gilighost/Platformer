@@ -33,10 +33,9 @@ namespace Platformer
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
-            //Random random = new Random();
-            //float red = random.Next(0, 256), green = random.Next(0, 256), blue = random.Next(0, 256);
-
-            //Color = new Color(red, green, blue);
+            Random random = new Random();
+            
+            float red = random.Next(0, 256), green = random.Next(0, 256), blue = random.Next(0, 256);
 
             Color = Color.White;
 

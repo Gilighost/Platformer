@@ -110,7 +110,7 @@ namespace Platformer
                 if (component is Goal)
                 {
                     component.BuildComponent(world, playerTexture);//replace playerTexture with goalTexture
-                    Camera.Current.CenterPointTarget = component.Body.Position.X;
+                    Camera.Current.CenterPointTarget = ConvertUnits.ToDisplayUnits(component.Body.Position.X);
                 }
                 //todo:  add more stuff
             }

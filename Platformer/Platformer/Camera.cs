@@ -16,7 +16,7 @@ namespace Platformer
     class Camera
     {
         // Distance away from the tracking body
-        private float offsetX;
+        private Vector2 offset;
 
         // Body to center the camera on
         private Body trackingBody;
@@ -40,20 +40,28 @@ namespace Platformer
             if (trackingBody != null)
             {
                 float halfScreenWidth = Game1.HalfScreenWidth;
+                float halfScreenHeight = Game1.HalfScreenHeight;
 
                 // If tracking body is not located in the center
                 // of the view (half screen width + current offset)
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) !=
-                    halfScreenWidth + offsetX)
+                    halfScreenWidth + offset.X)
                 {
-                    offsetX = MathHelper.Clamp(
+                    offset.X = MathHelper.Clamp(
                         ConvertUnits.ToDisplayUnits(trackingBody.Position.X) -
                         halfScreenWidth, 0, CenterPointTarget - halfScreenWidth);
+                }
+                if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) !=
+                    halfScreenHeight + offset.Y)
+                {
+                    offset.Y = MathHelper.Clamp(
+                        ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) -
+                        halfScreenHeight, 0, halfScreenHeight * 2);
                 }
             }
 
             // Move scene
-            TransformationMatrix = Matrix.CreateTranslation(-offsetX, 0, 0);
+            TransformationMatrix = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
         }
 
         public void StartTracking(Body body)

@@ -17,6 +17,8 @@ namespace Platformer
     class Player : Component
     {
         private KeyboardState oldKeyState;
+
+        private bool airborne;
         public Player(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
@@ -30,7 +32,7 @@ namespace Platformer
             //Body.SleepingAllowed = false;
             Body.BodyType = BodyType.Dynamic;
 
-            Body.Restitution = 0.1f;
+            Body.Restitution = 0f;
             Body.Friction = 1f;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
@@ -42,16 +44,26 @@ namespace Platformer
             // get movement
 
             KeyboardState state = Keyboard.GetState();
-            //Body.Awake = true;
 
-            if (state.IsKeyDown(Keys.Left))
+            if (Body.LinearVelocity.Y != 0)
+            {
+                airborne = true;
+            }
+            else
+            {
+                airborne = false;
+            }
+
+            if (state.IsKeyDown(Keys.Left) && Body.AngularVelocity > -20)
                 Body.ApplyTorque(-5);
 
-            if (state.IsKeyDown(Keys.Right))
+            if (state.IsKeyDown(Keys.Right) && Body.AngularVelocity < 20)
                 Body.ApplyTorque(5);
 
-            if (state.IsKeyDown(Keys.Up) && oldKeyState.IsKeyUp(Keys.Up))
-                Body.ApplyLinearImpulse(new Vector2(0, -5));
+            if (state.IsKeyDown(Keys.Up) && !airborne)
+            {
+                Body.ApplyLinearImpulse(new Vector2(0, -4));
+            }
 
             oldKeyState = state;
 
