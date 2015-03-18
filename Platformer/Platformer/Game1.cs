@@ -34,8 +34,6 @@ namespace Platformer
 
         public VisualizationData visData;
 
-        public Random random;
-
         public bool resetPlayerPosition;//////////////////////////////////////////////////
 
         public static float HalfScreenWidth { get; private set; }
@@ -73,8 +71,6 @@ namespace Platformer
 
             levelKey = 1;
 
-            random = new Random();
-
             base.Initialize();
         }
 
@@ -104,16 +100,16 @@ namespace Platformer
             {
                 if (component is Player)
                 {
-                    component.BuildComponent(world, playerTexture, random);
+                    component.BuildComponent(world, playerTexture);
                     Camera.Current.StartTracking(component.Body);
                 }
                 if (component is Block)
                 {
-                    component.BuildComponent(world, blockTexture, random);
+                    component.BuildComponent(world, blockTexture);
                 }
                 if (component is Goal)
                 {
-                    component.BuildComponent(world, playerTexture, random);//replace playerTexture with goalTexture
+                    component.BuildComponent(world, playerTexture);//replace playerTexture with goalTexture
                     Camera.Current.CenterPointTarget = ConvertUnits.ToDisplayUnits(component.Body.Position.X);
                 }
                 //todo:  add more stuff

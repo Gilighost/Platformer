@@ -24,12 +24,14 @@ namespace Platformer
 
         public Vector2 Origin { get; protected set; }
 
+        public Color Color { get; protected set; }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             
         }
 
-        public virtual void BuildComponent(World world, Texture2D texture, Random random)
+        public virtual void BuildComponent(World world, Texture2D texture)
         {
 
         }

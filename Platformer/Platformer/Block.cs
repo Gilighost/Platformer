@@ -16,13 +16,12 @@ namespace Platformer
 {
     class Block : Component
     {
-        private Color myColor;
         public Block(Vector2 coordinates)
         {
-            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));           
+            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));  
         }
 
-        public override void BuildComponent(World world, Texture2D texture, Random random)
+        public override void BuildComponent(World world, Texture2D texture)
         {
             Texture = texture;
 
@@ -33,49 +32,13 @@ namespace Platformer
             Body.Friction = 1f;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-            int red = -1, green = -1, blue = -1;
-            int i = random.Next(1, 25);
-            if (i <= 9)
-            {
-                red = 255;
-            }
-            else if (i >= 13 && i <= 21)
-            {
-                red = 0;
-            }
-            if (i >= 9 && i <= 17)
-            {
-                green = 255;
-            }
-            else if (i <= 5 || i >= 21)
-            {
-                green = 0;
-            }
-            if (i >= 17 || i == 1)
-            {
-                blue = 255;
-            }
-            else if (i >= 5 && i <= 13)
-            {
-                blue = 0;
-            }
 
-            i = random.Next(0, 4);
+            Random random = new Random();
+            
+            float red = random.Next(0, 256), green = random.Next(0, 256), blue = random.Next(0, 256);
 
-            if (red == -1)
-            {
-                red = i * 64;
-            }
-            else if (green == -1)
-            {
-                green = i * 64;
-            }
-            else if (blue == -1)
-            {
-                blue = i * 64;
-            }
+            Color = Color.White;
 
-            myColor = new Color(red, green, blue);
         }
 
         public override void Update(VisualizationData visData)
@@ -90,7 +53,7 @@ namespace Platformer
             spriteBatch.Draw(Texture,
                              ConvertUnits.ToDisplayUnits(Body.Position),
                              null,
-                             myColor,
+                             Color,
                              Body.Rotation,
                              Origin,
                              1f,
