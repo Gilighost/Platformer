@@ -16,9 +16,12 @@ namespace Platformer
 {
     class Block : Component
     {
+        private int timer, rInc, gInc, bInc;
+
         public Block(Vector2 coordinates)
         {
-            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));  
+            Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
+            timer = random.Next(0, 601);
         }
 
         public override void BuildComponent(World world, Texture2D texture)
@@ -93,6 +96,55 @@ namespace Platformer
         {
             //change component data based on music visualization input
             //GenerateColor(); //WARNING EPILEPSY
+
+            if (timer > 0)
+            {
+                timer--;
+            }
+            else
+            {
+
+                int red = (int)Color.R, green = (int)Color.G, blue = (int)Color.B;
+
+                if (red <= 0)
+                {
+                    red = 0;
+                    rInc = random.Next(1,4);
+                }
+                else if (red >= 255)
+                {
+                    red = 255;
+                    rInc = random.Next(-3, 0);
+                }
+
+                if (green <= 0)
+                {
+                    green = 0;
+                    gInc = random.Next(1, 4);
+                }
+                else if (green >= 255)
+                {
+                    green = 255;
+                    gInc = random.Next(-3, 0);
+                }
+
+                if (blue <= 0)
+                {
+                    blue = 0;
+                    bInc = random.Next(1, 4);
+                }
+                else if (blue >= 255)
+                {
+                    blue = 255;
+                    bInc = random.Next(-3, 0);
+                }
+
+                red += rInc;
+                green += gInc;
+                blue += bInc;
+
+                Color = new Color(red, green, blue);
+            }
             base.Update(visData);
         }
 
