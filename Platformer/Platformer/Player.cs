@@ -19,12 +19,15 @@ namespace Platformer
         private KeyboardState oldKeyState;
 
         private bool airborne;
+
+        private Color myColor;
+
         public Player(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
         }
 
-        public override void BuildComponent(World world, Texture2D texture)
+        public override void BuildComponent(World world, Texture2D texture, Random random)
         {
             Texture = texture;
 
@@ -37,7 +40,7 @@ namespace Platformer
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
-            Color = Color.White;
+            myColor = Color.White;
         }
         public override void Update(VisualizationData visData)
         {
@@ -75,7 +78,7 @@ namespace Platformer
             spriteBatch.Draw(Texture,
                  ConvertUnits.ToDisplayUnits(Body.Position),
                  null,
-                 Color,
+                 myColor,
                  Body.Rotation,
                  Origin,
                  1f,
