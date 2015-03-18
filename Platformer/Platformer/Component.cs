@@ -26,6 +26,8 @@ namespace Platformer
 
         public Color Color { get; protected set; }
 
+        public static Random random = new Random();
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             

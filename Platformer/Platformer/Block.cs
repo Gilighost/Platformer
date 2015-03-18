@@ -32,19 +32,67 @@ namespace Platformer
             Body.Friction = 1f;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-
-            Random random = new Random();
             
-            float red = random.Next(0, 256), green = random.Next(0, 256), blue = random.Next(0, 256);
+            int red = random.Next(0, 256), green = random.Next(0, 256), blue = random.Next(0, 256);
 
-            Color = Color.White;
+            GenerateColor();
+        }
+
+        private void GenerateColor()
+        {
+            int red = -1, green = -1, blue = -1;
+
+            int i = random.Next(1, 25);
+
+            if(i <= 9)
+            {
+                red = 255;
+            }
+            else if (i >= 13 && i <= 21)
+            {
+                red = 0;
+            }
+            
+            if (i >= 9 && i <= 17)
+            {
+                green = 255;
+            }
+            else if (i <= 5 || i >= 21)
+            {
+                green = 0;
+            }
+            if (i >=17 || i == 1)
+            {
+                blue = 255;
+            }
+            else if (i >= 5 && i <= 13)
+            {
+                blue = 0;
+            }
+
+            i = random.Next(0, 4);
+
+            if (red == -1)
+            {
+                red = i * 64;
+            }
+            else if (green == -1)
+            {
+                green = i * 64;
+            }
+            else if (blue == -1)
+            {
+                blue = i * 64;
+            }
+
+            Color = new Color(red, green, blue);
 
         }
 
         public override void Update(VisualizationData visData)
         {
             //change component data based on music visualization input
-
+            //GenerateColor(); //WARNING EPILEPSY
             base.Update(visData);
         }
 

@@ -65,6 +65,15 @@ namespace Platformer
                 Body.ApplyLinearImpulse(new Vector2(0, -4));
             }
 
+            if (airborne && state.IsKeyDown(Keys.Left) && Body.LinearVelocity.X > -20)
+            {
+                Body.ApplyForce(new Vector2(-5, 0));
+            }
+            else if (airborne && state.IsKeyDown(Keys.Right) && Body.LinearVelocity.X < 20)
+            {
+                Body.ApplyForce(new Vector2(5, 0));
+            }
+
             oldKeyState = state;
 
             base.Update(visData);
