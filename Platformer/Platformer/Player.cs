@@ -33,22 +33,19 @@ namespace Platformer
 
             Body.Friction = 10f;
 
-            Body.OnCollision += Body_OnCollision;
+            Body.OnCollision += Player_OnCollision;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
             Color = Color.White;
         }
 
-        bool Body_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        private bool Player_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            if (true)
-            {
-
-            }
-            
-            return true;
+            throw new NotImplementedException();
         }
+
+      
         public override void Update()
         {
             // get movement

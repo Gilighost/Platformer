@@ -16,9 +16,12 @@ namespace Platformer
 {
     class Goal : Component
     {
+        
+
          public Goal(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
+     
         }
 
         public override void BuildComponent(World world, Texture2D texture)
@@ -32,14 +35,23 @@ namespace Platformer
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
+            Body.OnCollision += Goal_OnCollision;
+
             Color = Color.White;
 
             Body.IsSensor = true;
         }
 
+        private bool Goal_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Update()
         {
             //change component data based on music visualization input
+
+
 
             base.Update();
         }
