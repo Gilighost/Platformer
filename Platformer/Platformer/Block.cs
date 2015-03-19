@@ -31,7 +31,7 @@ namespace Platformer
             //Body.SleepingAllowed = false;
             //Body.Position = Position;
             Body.BodyType = BodyType.Static;
-            Body.Friction = 1f;
+            Body.Friction = 10f;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
@@ -99,13 +99,8 @@ namespace Platformer
             }
         }
 
-        public override void Update(VisualizationData visData)
+        public override void Update()
         {
-            //change component data based on music visualization input
-            //GenerateColor(); //WARNING EPILEPSY
-
-
-
             int red = (int)Color.R, green = (int)Color.G, blue = (int)Color.B;
 
             if (red > 0 && red < 255)
@@ -221,7 +216,7 @@ namespace Platformer
 
             Color = new Color(red, green, blue);
 
-            base.Update(visData);
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

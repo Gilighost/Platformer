@@ -32,10 +32,6 @@ namespace Platformer
         private Texture2D playerTexture;
         private Texture2D blockTexture;
 
-        public VisualizationData visData;
-
-        public bool resetPlayerPosition;//////////////////////////////////////////////////
-
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
 
@@ -153,12 +149,6 @@ namespace Platformer
                 BuildGameComponents();
             }
 
-            resetPlayerPosition = false;//////////////////////////////////////////////////////////////
-            if (keyBoardState.IsKeyDown(Keys.S) && !lastKeyBoardState.IsKeyDown(Keys.S))//////////////
-            {/////////////////////////////////////////////////////////////////////////////////////////
-                resetPlayerPosition = true;///////////////////////////////////////////////////////////
-            }/////////////////////////////////////////////////////////////////////////////////////////
-
             lastKeyBoardState = keyBoardState;
         }
 
@@ -176,11 +166,6 @@ namespace Platformer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (MediaPlayer.State == MediaState.Playing)
-            {
-                MediaPlayer.GetVisualizationData(visData);
-            }
-
             HandleMouseInput();
             HandleKeyPadInput();
 
@@ -188,12 +173,7 @@ namespace Platformer
             {
                 foreach (Component component in LevelReader.Levels.Components)
                 {
-                    component.Update(visData);
-
-                    if (component is Player && resetPlayerPosition)///////////////////
-                    {/////////////////////////////////////////////////////////////////
-                        component.Body.Position = component.Position;/////////////////
-                    }/////////////////////////////////////////////////////////////////
+                    component.Update();
                 }
             }
             // Update Farseer world

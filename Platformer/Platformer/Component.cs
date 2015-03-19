@@ -38,7 +38,7 @@ namespace Platformer
 
         }
 
-        public virtual void Update(VisualizationData visData)
+        public virtual void Update()
         {
 
         }

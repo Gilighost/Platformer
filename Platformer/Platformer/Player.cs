@@ -18,7 +18,6 @@ namespace Platformer
     {
         private KeyboardState oldKeyState;
 
-        private bool airborne;
         public Player(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
@@ -32,83 +31,72 @@ namespace Platformer
             //Body.SleepingAllowed = false;
             Body.BodyType = BodyType.Dynamic;
 
-            Body.Restitution = 0f;
-            Body.Friction = 1f;
+            Body.Friction = 10f;
+
+            Body.OnCollision += Body_OnCollision;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
             Color = Color.White;
         }
-        public override void Update(VisualizationData visData)
+
+        bool Body_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            if (true)
+            {
+
+            }
+            
+            return true;
+        }
+        public override void Update()
         {
             // get movement
 
             KeyboardState state = Keyboard.GetState();
 
-            if (Body.LinearVelocity.Y != 0)
+
+            if (state.IsKeyDown(Keys.Left))
             {
-                airborne = true;
+                if (Body.LinearVelocity.X > -5)
+                {
+                    Body.ApplyForce(new Vector2(-20, 0));
+                }   
             }
             else
             {
-                airborne = false;
-            }
-
-            if (state.IsKeyDown(Keys.Left) && Body.AngularVelocity > -20)
-            {
-                //Body.ApplyTorque(-5);
-                if (Body.LinearVelocity.X > 0)
-                {
-                    Body.ApplyForce(new Vector2(-3, 0));
-                }
-
-                if (airborne)
-                {
-                    Body.ApplyForce(new Vector2(-2, 0));
-                }
-                else
-                {
-                    Body.ApplyForce(new Vector2(-4, 0));
-                }
-            }
-
-            if (state.IsKeyDown(Keys.Right) && Body.AngularVelocity < 20)
-            {
-                //Body.ApplyTorque(5);
-
                 if (Body.LinearVelocity.X < 0)
                 {
-                    Body.ApplyForce(new Vector2(3, 0));
+                    //Body.ApplyForce(new Vector2(5, 0));
                 }
-
-                if (airborne)
-                {
-                    Body.ApplyForce(new Vector2(2, 0));
-                }
-                else
-                {
-                    Body.ApplyForce(new Vector2(4, 0));
-                }
-
             }
 
-            if (state.IsKeyDown(Keys.Up) && !airborne)
+            if (state.IsKeyDown(Keys.Right))
             {
-                Body.ApplyLinearImpulse(new Vector2(0, -4));
+               if (Body.LinearVelocity.X < 5)
+               {
+                   Body.ApplyForce(new Vector2(20, 0));
+               }
+            }
+            else
+            {
+                if (Body.LinearVelocity.X > 0)
+                {
+                   // Body.ApplyForce(new Vector2(-5, 0));
+                }
             }
 
-            //if (airborne && state.IsKeyDown(Keys.Left))
-            //{
-            //    Body.ApplyForce(new Vector2(-3, 0));
-            //}
-            //else if (airborne && state.IsKeyDown(Keys.Right))
-            //{
-            //    Body.ApplyForce(new Vector2(3, 0));
-            //}
+            if (state.IsKeyDown(Keys.Up))
+            {
+                if (oldKeyState.IsKeyUp(Keys.Up))
+                {
+                    Body.ApplyLinearImpulse(new Vector2(0, -3));
+                }
+            }
 
             oldKeyState = state;
 
-            base.Update(visData);
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

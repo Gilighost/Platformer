@@ -37,11 +37,11 @@ namespace Platformer
             Body.IsSensor = true;
         }
 
-        public override void Update(VisualizationData visData)
+        public override void Update()
         {
             //change component data based on music visualization input
 
-            base.Update(visData);
+            base.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
