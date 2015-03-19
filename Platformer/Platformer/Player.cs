@@ -55,24 +55,56 @@ namespace Platformer
             }
 
             if (state.IsKeyDown(Keys.Left) && Body.AngularVelocity > -20)
-                Body.ApplyTorque(-5);
+            {
+                //Body.ApplyTorque(-5);
+                if (Body.LinearVelocity.X > 0)
+                {
+                    Body.ApplyForce(new Vector2(-3, 0));
+                }
+
+                if (airborne)
+                {
+                    Body.ApplyForce(new Vector2(-2, 0));
+                }
+                else
+                {
+                    Body.ApplyForce(new Vector2(-4, 0));
+                }
+            }
 
             if (state.IsKeyDown(Keys.Right) && Body.AngularVelocity < 20)
-                Body.ApplyTorque(5);
+            {
+                //Body.ApplyTorque(5);
+
+                if (Body.LinearVelocity.X < 0)
+                {
+                    Body.ApplyForce(new Vector2(3, 0));
+                }
+
+                if (airborne)
+                {
+                    Body.ApplyForce(new Vector2(2, 0));
+                }
+                else
+                {
+                    Body.ApplyForce(new Vector2(4, 0));
+                }
+
+            }
 
             if (state.IsKeyDown(Keys.Up) && !airborne)
             {
                 Body.ApplyLinearImpulse(new Vector2(0, -4));
             }
 
-            if (airborne && state.IsKeyDown(Keys.Left) && Body.LinearVelocity.X > -20)
-            {
-                Body.ApplyForce(new Vector2(-5, 0));
-            }
-            else if (airborne && state.IsKeyDown(Keys.Right) && Body.LinearVelocity.X < 20)
-            {
-                Body.ApplyForce(new Vector2(5, 0));
-            }
+            //if (airborne && state.IsKeyDown(Keys.Left))
+            //{
+            //    Body.ApplyForce(new Vector2(-3, 0));
+            //}
+            //else if (airborne && state.IsKeyDown(Keys.Right))
+            //{
+            //    Body.ApplyForce(new Vector2(3, 0));
+            //}
 
             oldKeyState = state;
 

@@ -23,3 +23,6 @@ C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Levels\level3.txt
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Levels\level3.txt
