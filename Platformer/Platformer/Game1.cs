@@ -32,10 +32,13 @@ namespace Platformer
         private Texture2D playerTexture;
         private Texture2D blockTexture;
         private Texture2D enemy1Texture;
+        private Texture2D explosionTexture;
 
         private SpriteFont titleFont;
         private SpriteFont startFont;
         private SpriteFont instructionFont;
+
+        private Explosion explosion;
 
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
@@ -88,6 +91,9 @@ namespace Platformer
             blockTexture = Content.Load<Texture2D>(@"Images\block");
             enemy1Texture = Content.Load<Texture2D>(@"Images\ipod");
 
+            explosionTexture = Content.Load<Texture2D>(@"Images\smoke");
+            explosion = new Explosion(explosionTexture);
+
             titleFont = Content.Load<SpriteFont>(@"Fonts\titleFont");
             instructionFont = Content.Load<SpriteFont>(@"Fonts\instructionFont");
             startFont = Content.Load<SpriteFont>(@"Fonts\startFont");
@@ -138,7 +144,12 @@ namespace Platformer
             }
             else if ((string)fixtureB.Body.UserData == "enemy")
             {
-                //stuff
+                if (fixtureB.Body.Position.Y > fixtureA.Body.Position.Y + 0.2)
+                {
+                    explosion.Activate(fixtureB.Body);
+                    fixtureB.Dispose();
+                    fixtureA.Body.ApplyLinearImpulse(new Vector2(0, -1));
+                }
             }
             return true;
         }

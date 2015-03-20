@@ -32,3 +32,4 @@ C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\titleFont.xnb
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\instructionFont.xnb
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\startFont.xnb
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\smoke.xnb

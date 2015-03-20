@@ -30,6 +30,7 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(Texture.Width), ConvertUnits.ToSimUnits(Texture.Height), 1f, Position);
+            Body.UserData = "enemy";
             Body.BodyType = BodyType.Dynamic;
             Body.IgnoreGravity = true;
 

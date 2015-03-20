@@ -55,6 +55,15 @@
       <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\startFont.xnb</Output>
       <Time>2015-03-20T13:26:05.1097924-05:00</Time>
     </Item>
+    <Item>
+      <Source>Images\smoke.png</Source>
+      <Name>Images\smoke</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\smoke.xnb</Output>
+      <Time>2015-02-13T12:17:02-06:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{2A1B9809-32DE-4359-B944-401CF921BC25}</ContentProjectGUID>
