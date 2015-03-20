@@ -161,8 +161,8 @@ namespace Platformer
                 if (fixtureB.Body.Position.Y > fixtureA.Body.Position.Y + 0.2)
                 {
                     explosion.Activate(fixtureB.Body);
-                    fixtureB.Dispose();
-                    fixtureA.Body.ApplyLinearImpulse(new Vector2(0, -1));
+                    
+                    fixtureA.Body.ApplyLinearImpulse(new Vector2(0, -3));
                 }
             }
             return true;
@@ -228,13 +228,13 @@ namespace Platformer
                     //for parallax
                     if(component is Player)
                     {
-                        bgLayer1.X = component.Body.Position.Y * 2;
+                        bgLayer1.X = component.Body.Position.X * 10;
                         bgLayer2.X = component.Body.Position.X * - 5;
-                        bgLayer3.X = component.Body.Position.X * 9;
+                        bgLayer3.X = component.Body.Position.Y * 4;
 
-                        bgLayer1.Y = component.Body.Position.X * -9;
+                        bgLayer1.Y = component.Body.Position.Y * 9;
                         bgLayer2.Y = component.Body.Position.X * 5;
-                        bgLayer3.Y = component.Body.Position.X * -2;
+                        bgLayer3.Y = component.Body.Position.X * -7;
                     }
                 }
             }
@@ -266,15 +266,7 @@ namespace Platformer
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, Camera.Current.TransformationMatrix);
 
-            if (LevelReader.Levels.Components != null)
-            {
-                foreach (Component component in LevelReader.Levels.Components)
-                {
-                     component.Draw(spriteBatch);
-                }
-            }
-
-            if(levelKey == 1)
+            if (levelKey == 1)
             {
                 spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
                 spriteBatch.DrawString(instructionFont, "By Nathan and Cameron", new Vector2(480, 210), Color.White);
@@ -292,7 +284,15 @@ namespace Platformer
 
             }
 
-           
+            if (LevelReader.Levels.Components != null)
+            {
+                foreach (Component component in LevelReader.Levels.Components)
+                {
+                     component.Draw(spriteBatch);
+                }
+            }
+
+            explosion.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();
 

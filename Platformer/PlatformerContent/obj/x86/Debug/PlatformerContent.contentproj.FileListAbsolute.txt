@@ -1,3 +1,2 @@
 c:\users\nroberts\documents\visual studio 2013\Projects\Platformer\Platformer\PlatformerContent\obj\x86\Debug\PlatformerContent.contentprojResolveAssemblyReference.cache
 C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\PlatformerContent\obj\x86\Debug\PlatformerContent.contentprojResolveAssemblyReference.cache
-C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\PlatformerContent\obj\x86\Debug\PlatformerContent.contentprojResolveAssemblyReference.cache

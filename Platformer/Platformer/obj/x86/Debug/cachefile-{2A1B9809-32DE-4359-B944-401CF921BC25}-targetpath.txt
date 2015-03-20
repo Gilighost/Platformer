@@ -1,9 +1,9 @@
-Content\Images\block.xnb
-Content\Images\record_98px.xnb
-Content\Images\ipod.xnb
 Content\Fonts\titleFont.xnb
 Content\Fonts\instructionFont.xnb
 Content\Fonts\startFont.xnb
+Content\Images\block.xnb
+Content\Images\record_98px.xnb
+Content\Images\ipod.xnb
 Content\Images\smoke.xnb
 Content\Images\blueLines.xnb
 Content\Images\goldLines.xnb

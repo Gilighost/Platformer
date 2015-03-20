@@ -2,33 +2,6 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
-      <Source>Images\block.png</Source>
-      <Name>Images\block</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb</Output>
-      <Time>2015-03-15T20:36:58.2883635-05:00</Time>
-    </Item>
-    <Item>
-      <Source>Images\record_98px.png</Source>
-      <Name>Images\record_98px</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb</Output>
-      <Time>2015-02-28T13:52:37.2699888-06:00</Time>
-    </Item>
-    <Item>
-      <Source>Images\ipod.png</Source>
-      <Name>Images\ipod</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\ipod.xnb</Output>
-      <Time>2015-03-19T19:55:45.6455848-05:00</Time>
-    </Item>
-    <Item>
       <Source>Fonts\titleFont.spritefont</Source>
       <Name>Fonts\titleFont</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -54,6 +27,33 @@
       <Options>None</Options>
       <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\startFont.xnb</Output>
       <Time>2015-03-20T13:26:05.1097924-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Images\block.png</Source>
+      <Name>Images\block</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb</Output>
+      <Time>2015-03-15T20:36:58.2883635-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Images\record_98px.png</Source>
+      <Name>Images\record_98px</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb</Output>
+      <Time>2015-02-28T13:52:37.2699888-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Images\ipod.png</Source>
+      <Name>Images\ipod</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\ipod.xnb</Output>
+      <Time>2015-03-19T19:55:45.6455848-05:00</Time>
     </Item>
     <Item>
       <Source>Images\smoke.png</Source>
