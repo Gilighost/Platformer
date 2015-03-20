@@ -18,6 +18,7 @@ namespace Platformer
     {
         int direction;
         int speed;
+        float altitude;
 
         public Enemy1(Vector2 coordinates)
         {
@@ -30,34 +31,32 @@ namespace Platformer
 
             Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(Texture.Width), ConvertUnits.ToSimUnits(Texture.Height), 1f, Position);
             Body.BodyType = BodyType.Dynamic;
-
             Body.IgnoreGravity = true;
 
             Body.Friction = 0f;
 
-            Body.OnCollision += changeDirection;
+            Body.FixedRotation = true;
+
+            altitude = Body.Position.Y;
 
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             direction = -1;
             speed = random.Next(1, 2);
-            Body.ApplyLinearImpulse(new Vector2(speed * direction, 0));
+
+            Body.LinearVelocity = new Vector2(speed * direction, 0);
             Color = Color.White;
-        }
-
-        private bool changeDirection(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
-        {
-
-            direction *= -1;
-            Body.ApplyLinearImpulse(new Vector2(speed * direction, 0));
-            
-            return true;
         }
 
         public override void Update()
         {
             //Body.Position = new Vector2(Body.Position.X + ConvertUnits.ToSimUnits(speed * direction), Body.Position.Y);
 
-            
+            if (Body.LinearVelocity.X == 0)
+            {
+                direction *= -1;
+            }
+            Body.LinearVelocity = new Vector2(speed * direction, 0);
+            Body.Position = new Vector2(Body.Position.X, altitude);
 
             base.Update();
         }
