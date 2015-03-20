@@ -85,6 +85,11 @@ namespace Platformer
                             Component goal = new Goal(new Vector2(j, i));
                             Components.Add(goal);
                         }
+                        if (levelContent[levelKey][i][j] == 'I')
+                        {
+                            Component enemyIpod = new Enemy1(new Vector2(j, i));
+                            Components.Add(enemyIpod);
+                        }
                     }
                 }
             }
