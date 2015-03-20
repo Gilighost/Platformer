@@ -83,6 +83,9 @@ namespace Platformer
             blockTexture = Content.Load<Texture2D>(@"Images\block");
 
             LevelReader.Levels.LoadContent(Content, "Levels");
+
+            LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+            BuildGameComponents();
         }
 
         private void BuildGameComponents()
@@ -115,11 +118,11 @@ namespace Platformer
 
         private bool Player_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            if (fixtureB.Body.UserData == "goal")
+            if ((string)fixtureB.Body.UserData == "goal")
             {
                 nextLevel();
             }
-            else if (fixtureB.Body.UserData == "enemy")
+            else if ((string)fixtureB.Body.UserData == "enemy")
             {
                 //stuff
             }
@@ -128,7 +131,9 @@ namespace Platformer
 
         private void nextLevel()
         {
-            throw new NotImplementedException();
+            levelKey++;
+            LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+            BuildGameComponents();
         }
 
         /// <summary>
@@ -143,30 +148,6 @@ namespace Platformer
         private void HandleKeyPadInput()
         {
             KeyboardState keyBoardState = Keyboard.GetState();
-
-            // set levelKey 
-
-            if (keyBoardState.IsKeyDown(Keys.D1))
-            {
-                levelKey = 1;
-            }
-            if (keyBoardState.IsKeyDown(Keys.D2))
-            {
-                levelKey = 2;
-            }
-            if (keyBoardState.IsKeyDown(Keys.D3))
-            {
-                levelKey = 3;
-            }
-
-
-            // Load new level
-
-            if (keyBoardState.IsKeyDown(Keys.L) && !lastKeyBoardState.IsKeyDown(Keys.L))
-            {
-                LevelReader.Levels.ReadInLevelComponents(world, levelKey);
-                BuildGameComponents();
-            }
 
             lastKeyBoardState = keyBoardState;
         }

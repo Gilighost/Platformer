@@ -59,30 +59,38 @@ namespace Platformer
 
         public void ReadInLevelComponents(World world, int levelKey)
         {
-            Components = new List<Component>();
-            for (int i = 0; i < LevelReader.levelContent[levelKey].Length; i++) //lines
+
+            if (levelKey <= LevelReader.levelContent.Count)
             {
-                for (int j = 0; j < levelContent[levelKey][i].Length; j++) //characters
+                Components = new List<Component>();
+                for (int i = 0; i < LevelReader.levelContent[levelKey].Length; i++) //lines
                 {
-
-                    if (levelContent[levelKey][i][j] == 'P')
+                    for (int j = 0; j < levelContent[levelKey][i].Length; j++) //characters
                     {
-                        Component player = new Player(new Vector2(j,i));
-                        Components.Add(player);
-                    }
 
-                    if (levelContent[levelKey][i][j] == '#')
-                    {
-                        Component block = new Block(new Vector2(j, i));
-                        Components.Add(block);
-                    }
+                        if (levelContent[levelKey][i][j] == 'P')
+                        {
+                            Component player = new Player(new Vector2(j, i));
+                            Components.Add(player);
+                        }
 
-                    if (levelContent[levelKey][i][j] == 'G')
-                    {
-                        Component goal = new Goal(new Vector2(j, i));
-                        Components.Add(goal);
+                        if (levelContent[levelKey][i][j] == '#')
+                        {
+                            Component block = new Block(new Vector2(j, i));
+                            Components.Add(block);
+                        }
+
+                        if (levelContent[levelKey][i][j] == 'G')
+                        {
+                            Component goal = new Goal(new Vector2(j, i));
+                            Components.Add(goal);
+                        }
                     }
                 }
+            }
+            else
+            {
+                //last level has been won
             }
         }
     }

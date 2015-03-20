@@ -14,9 +14,9 @@ using FarseerPhysics.Factories;
 
 namespace Platformer
 {
-    class Enemy : Component
+    abstract class Enemy : Component
     {
-        public void killEnemy()
+        public void Die()
         {
             
         }

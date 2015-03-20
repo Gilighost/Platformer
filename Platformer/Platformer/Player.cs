@@ -28,7 +28,7 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(Texture.Height / 2), 1f, Position);
-            
+            Body.UserData = "player";
             Body.BodyType = BodyType.Dynamic;
 
             Body.Friction = 10f;
