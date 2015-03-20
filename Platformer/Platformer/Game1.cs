@@ -31,6 +31,7 @@ namespace Platformer
 
         private Texture2D playerTexture;
         private Texture2D blockTexture;
+        private Texture2D enemy1Texture;
 
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
@@ -81,6 +82,7 @@ namespace Platformer
 
             playerTexture = Content.Load<Texture2D>(@"Images\record_98px");
             blockTexture = Content.Load<Texture2D>(@"Images\block");
+            enemy1Texture = Content.Load<Texture2D>(@"Images\ipod");
 
             LevelReader.Levels.LoadContent(Content, "Levels");
 
