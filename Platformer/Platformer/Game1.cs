@@ -33,6 +33,10 @@ namespace Platformer
         private Texture2D blockTexture;
         private Texture2D enemy1Texture;
 
+        private SpriteFont titleFont;
+        private SpriteFont startFont;
+        private SpriteFont instructionFont;
+
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
 
@@ -83,6 +87,10 @@ namespace Platformer
             playerTexture = Content.Load<Texture2D>(@"Images\record_98px");
             blockTexture = Content.Load<Texture2D>(@"Images\block");
             enemy1Texture = Content.Load<Texture2D>(@"Images\ipod");
+
+            titleFont = Content.Load<SpriteFont>(@"Fonts\titleFont");
+            instructionFont = Content.Load<SpriteFont>(@"Fonts\instructionFont");
+            startFont = Content.Load<SpriteFont>(@"Fonts\startFont");
 
             LevelReader.Levels.LoadContent(Content, "Levels");
 
@@ -208,6 +216,17 @@ namespace Platformer
                 {
                      component.Draw(spriteBatch);
                 }
+            }
+
+            if(levelKey == 1)
+            {
+                spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
+                spriteBatch.DrawString(startFont, "START ->", new Vector2(800, 265), Color.Yellow);
+                spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.White);
+                spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.White);
+                spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.White);
+                spriteBatch.DrawString(instructionFont, "Land on top of enemies to kill them.", new Vector2(360, 440), Color.White);
+                spriteBatch.DrawString(instructionFont, "Boogie to the end before times up!", new Vector2(360, 470), Color.White);
             }
 
             spriteBatch.End();

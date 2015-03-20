@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb</Output>
-      <Time>2015-03-15T13:44:00.129555-05:00</Time>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\block.xnb</Output>
+      <Time>2015-03-15T20:36:58.2883635-05:00</Time>
     </Item>
     <Item>
       <Source>Images\record_98px.png</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb</Output>
-      <Time>2015-03-15T13:44:00.1305553-05:00</Time>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\record_98px.xnb</Output>
+      <Time>2015-02-28T13:52:37.2699888-06:00</Time>
     </Item>
     <Item>
       <Source>Images\ipod.png</Source>
@@ -25,8 +25,35 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\ipod.xnb</Output>
-      <Time>2015-03-19T19:58:43.9298135-05:00</Time>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\ipod.xnb</Output>
+      <Time>2015-03-19T19:55:45.6455848-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\titleFont.spritefont</Source>
+      <Name>Fonts\titleFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\titleFont.xnb</Output>
+      <Time>2015-03-20T13:09:09.917163-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\instructionFont.spritefont</Source>
+      <Name>Fonts\instructionFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\instructionFont.xnb</Output>
+      <Time>2015-03-20T13:09:59.0217882-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Fonts\startFont.spritefont</Source>
+      <Name>Fonts\startFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Fonts\startFont.xnb</Output>
+      <Time>2015-03-20T13:26:05.1097924-05:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -35,10 +62,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\PlatformerContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\nroberts\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\PlatformerContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -67,7 +94,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2015-02-01T14:59:24.7775036-06:00</Value>
+        <Value>2015-01-21T00:25:01.5011153-06:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

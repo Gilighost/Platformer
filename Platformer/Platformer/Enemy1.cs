@@ -33,7 +33,7 @@ namespace Platformer
             Body.BodyType = BodyType.Dynamic;
             Body.IgnoreGravity = true;
 
-            Body.Friction = 0f;
+            Body.Friction = 10f;
 
             Body.FixedRotation = true;
 
