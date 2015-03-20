@@ -5,6 +5,9 @@ Content\Fonts\titleFont.xnb
 Content\Fonts\instructionFont.xnb
 Content\Fonts\startFont.xnb
 Content\Images\smoke.xnb
+Content\Images\blueLines.xnb
+Content\Images\goldLines.xnb
+Content\Images\purpleLines.xnb
 Content\Levels\level2.txt
 Content\Levels\level3.txt
 Content\Levels\level1.txt

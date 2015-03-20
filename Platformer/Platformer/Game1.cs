@@ -34,6 +34,15 @@ namespace Platformer
         private Texture2D enemy1Texture;
         private Texture2D explosionTexture;
 
+        //background
+        private Texture2D blueLines;
+        private Texture2D purpleLines;
+        private Texture2D goldLines;
+        private Vector2 bgLayer1 = Vector2.Zero;
+        private Vector2 bgLayer2 = Vector2.Zero;
+        private Vector2 bgLayer3 = Vector2.Zero;
+
+
         private SpriteFont titleFont;
         private SpriteFont startFont;
         private SpriteFont instructionFont;
@@ -97,6 +106,11 @@ namespace Platformer
             titleFont = Content.Load<SpriteFont>(@"Fonts\titleFont");
             instructionFont = Content.Load<SpriteFont>(@"Fonts\instructionFont");
             startFont = Content.Load<SpriteFont>(@"Fonts\startFont");
+
+            //backgtound textures from disco-very.net
+            blueLines = Content.Load<Texture2D>(@"Images\blueLines");;
+            purpleLines = Content.Load<Texture2D>(@"Images\purpleLines");;
+            goldLines = Content.Load<Texture2D>(@"Images\goldLines");;
 
             LevelReader.Levels.LoadContent(Content, "Levels");
 
@@ -210,6 +224,18 @@ namespace Platformer
                 foreach (Component component in LevelReader.Levels.Components)
                 {
                     component.Update();
+
+                    //for parallax
+                    if(component is Player)
+                    {
+                        bgLayer1.X = component.Body.Position.Y * 2;
+                        bgLayer2.X = component.Body.Position.X * - 5;
+                        bgLayer3.X = component.Body.Position.X * 9;
+
+                        bgLayer1.Y = component.Body.Position.X * -9;
+                        bgLayer2.Y = component.Body.Position.X * 5;
+                        bgLayer3.Y = component.Body.Position.X * -2;
+                    }
                 }
             }
             // Update Farseer world
@@ -227,8 +253,16 @@ namespace Platformer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.SlateGray);
+            GraphicsDevice.Clear(Color.Indigo);
 
+            //background
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            spriteBatch.Draw(blueLines, new Rectangle((int)bgLayer1.X, (int)bgLayer1.Y, (int)blueLines.Width, (int)blueLines.Width), Color.White);
+            spriteBatch.Draw(purpleLines, new Rectangle((int)bgLayer2.X, (int)bgLayer2.Y, (int)purpleLines.Width, (int)purpleLines.Width), Color.White);
+            spriteBatch.Draw(goldLines, new Rectangle((int)bgLayer3.X, (int)bgLayer3.Y, (int)goldLines.Width, (int)goldLines.Width), Color.White);
+            spriteBatch.End();
+
+            //everything else
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, Camera.Current.TransformationMatrix);
 
@@ -258,7 +292,10 @@ namespace Platformer
 
             }
 
+           
+
             spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

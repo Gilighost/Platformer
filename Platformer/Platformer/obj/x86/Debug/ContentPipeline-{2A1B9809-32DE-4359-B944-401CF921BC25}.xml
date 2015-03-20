@@ -64,6 +64,33 @@
       <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\smoke.xnb</Output>
       <Time>2015-02-13T12:17:02-06:00</Time>
     </Item>
+    <Item>
+      <Source>Images\blueLines.png</Source>
+      <Name>Images\blueLines</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\blueLines.xnb</Output>
+      <Time>2015-03-20T15:48:08.5477851-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Images\goldLines.png</Source>
+      <Name>Images\goldLines</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\goldLines.xnb</Output>
+      <Time>2015-03-20T15:49:58.5347584-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Images\purpleLines.png</Source>
+      <Name>Images\purpleLines</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\purpleLines.xnb</Output>
+      <Time>2015-03-20T15:49:26.3693848-05:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{2A1B9809-32DE-4359-B944-401CF921BC25}</ContentProjectGUID>
