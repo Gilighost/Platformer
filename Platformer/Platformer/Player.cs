@@ -28,24 +28,16 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(Texture.Height / 2), 1f, Position);
-            //Body.SleepingAllowed = false;
+            
             Body.BodyType = BodyType.Dynamic;
 
             Body.Friction = 10f;
-
-            Body.OnCollision += Player_OnCollision;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
             Color = Color.White;
         }
 
-        private bool Player_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
-        {
-            throw new NotImplementedException();
-        }
-
-      
         public override void Update()
         {
             // get movement
