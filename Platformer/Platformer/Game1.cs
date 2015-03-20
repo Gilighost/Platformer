@@ -98,6 +98,7 @@ namespace Platformer
                 {
                     component.BuildComponent(world, playerTexture);
                     Camera.Current.StartTracking(component.Body);
+                    component.Body.OnCollision += Player_OnCollision;
                 }
                 if (component is Block)
                 {
@@ -110,6 +111,24 @@ namespace Platformer
                 }
                 //todo:  add more stuff
             }
+        }
+
+        private bool Player_OnCollision(Fixture fixtureA, Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            if (fixtureB.Body.UserData == "goal")
+            {
+                nextLevel();
+            }
+            else if (fixtureB.Body.UserData == "enemy")
+            {
+                //stuff
+            }
+            return true;
+        }
+
+        private void nextLevel()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

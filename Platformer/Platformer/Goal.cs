@@ -29,7 +29,7 @@ namespace Platformer
             Texture = texture;
 
             Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(Texture.Width), ConvertUnits.ToSimUnits(Texture.Height), 1f, Position);
-            //Body.SleepingAllowed = false;
+            Body.UserData = "goal";
             Body.BodyType = BodyType.Static;
             Body.Friction = 0.5f;
 
