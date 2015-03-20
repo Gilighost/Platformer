@@ -163,6 +163,17 @@ namespace Platformer
         {
             KeyboardState keyBoardState = Keyboard.GetState();
 
+            if ((keyBoardState.IsKeyDown(Keys.LeftShift) || keyBoardState.IsKeyDown(Keys.RightShift)) && keyBoardState.IsKeyDown(Keys.R))
+            {
+                levelKey = 1;
+                LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+                BuildGameComponents();
+            }
+            if (keyBoardState.IsKeyDown(Keys.R))
+            {
+                BuildGameComponents();
+            }
+
             lastKeyBoardState = keyBoardState;
         }
 
@@ -221,12 +232,19 @@ namespace Platformer
             if(levelKey == 1)
             {
                 spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
+                spriteBatch.DrawString(instructionFont, "By Nathan and Cameron", new Vector2(480, 210), Color.White);
                 spriteBatch.DrawString(startFont, "START ->", new Vector2(800, 265), Color.Yellow);
-                spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.White);
-                spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.White);
-                spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.White);
-                spriteBatch.DrawString(instructionFont, "Land on top of enemies to kill them.", new Vector2(360, 440), Color.White);
-                spriteBatch.DrawString(instructionFont, "Boogie to the end before times up!", new Vector2(360, 470), Color.White);
+                spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.Black);
+                spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.Black);
+                spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.Black);
+                spriteBatch.DrawString(instructionFont, "Land on top of enemies to kill them.", new Vector2(360, 440), Color.Black);
+                spriteBatch.DrawString(instructionFont, "Boogie to the end before times up!", new Vector2(360, 470), Color.Black);
+                spriteBatch.DrawString(instructionFont, "R=Restart level, Shift+R=Restart game.", new Vector2(360, 500), Color.Black);
+
+            }
+            else
+            {
+
             }
 
             spriteBatch.End();
