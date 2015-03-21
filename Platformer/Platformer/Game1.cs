@@ -32,6 +32,8 @@ namespace Platformer
         private Texture2D playerTexture;
         private Texture2D blockTexture;
         private Texture2D enemy1Texture;
+        private Texture2D enemy2Texture;
+
         private Texture2D explosionTexture;
 
         //background
@@ -48,6 +50,10 @@ namespace Platformer
         private SpriteFont instructionFont;
 
         private Explosion explosion;
+
+        //managing player
+        private const int STARTING_LIVES = 3;
+        private int playerLives;
 
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
@@ -83,6 +89,8 @@ namespace Platformer
             HalfScreenHeight = GraphicsDevice.Viewport.Height / 2;
 
             levelKey = 1;
+            
+            playerLives = STARTING_LIVES;
 
             base.Initialize();
         }
@@ -99,6 +107,11 @@ namespace Platformer
             playerTexture = Content.Load<Texture2D>(@"Images\record_98px");
             blockTexture = Content.Load<Texture2D>(@"Images\block");
             enemy1Texture = Content.Load<Texture2D>(@"Images\ipod");
+
+            //www.wpclipart.com
+            enemy2Texture = Content.Load<Texture2D>(@"Images\redSquare");
+
+
 
             explosionTexture = Content.Load<Texture2D>(@"Images\smoke");
             explosion = new Explosion(explosionTexture);
@@ -146,6 +159,10 @@ namespace Platformer
                 {
                     component.BuildComponent(world, enemy1Texture);
                 }
+                if (component is Enemy2)
+                {
+                    component.BuildComponent(world, enemy2Texture);
+                }
                 //todo:  add more stuff
             }
         }
@@ -156,6 +173,7 @@ namespace Platformer
             {
                 nextLevel();
             }
+
             else if ((string)fixtureB.Body.UserData == "enemy")
             {
                 if (fixtureB.Body.Position.Y > fixtureA.Body.Position.Y + 0.2)
@@ -163,8 +181,49 @@ namespace Platformer
                     explosion.Activate(fixtureB.Body);
                     
                     fixtureA.Body.ApplyLinearImpulse(new Vector2(0, -3));
+                    foreach (Component component in LevelReader.Levels.Components)
+                    {
+                        if (fixtureB.Body.BodyId == component.Body.BodyId)
+                        {
+                            ((Enemy)component).Die();
+                        }
+                    }
+                    fixtureB.Body.Dispose();
+                }
+                else
+                {
+                    if(playerLives > 0)
+                    {
+                        playerLives--;
+                        LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+                        BuildGameComponents();
+                    }
+                    else
+                    {
+                        levelKey = 1;
+                        LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+                        BuildGameComponents();
+                        playerLives = STARTING_LIVES;
+                    }
                 }
             }
+
+            //only one jump
+            if (fixtureB.Body.Position.Y > fixtureA.Body.Position.Y + 0.2)
+            {
+                foreach (Component component in LevelReader.Levels.Components)
+                {
+                    if (fixtureA.Body.BodyId == component.Body.BodyId)
+                    {
+                        if (((Player)component).Airborne == true)
+                        {
+                            ((Player)component).Airborne = false;
+                        }
+                    }
+                }
+                
+            }
+
             return true;
         }
 
@@ -228,7 +287,7 @@ namespace Platformer
                     //for parallax
                     if(component is Player)
                     {
-                        bgLayer1.X = component.Body.Position.X * 10;
+                        bgLayer1.X = component.Body.Position.X * -10;
                         bgLayer2.X = component.Body.Position.X * - 5;
                         bgLayer3.X = component.Body.Position.Y * 4;
 

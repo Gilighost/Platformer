@@ -16,9 +16,11 @@ namespace Platformer
 {
     abstract class Enemy : Component
     {
+        protected bool isAlive = true;
+
         public void Die()
         {
-            
+            isAlive = false;
         }
     }
 }

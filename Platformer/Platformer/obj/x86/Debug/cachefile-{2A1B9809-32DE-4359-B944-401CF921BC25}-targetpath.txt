@@ -8,6 +8,7 @@ Content\Images\smoke.xnb
 Content\Images\blueLines.xnb
 Content\Images\goldLines.xnb
 Content\Images\purpleLines.xnb
+Content\Images\redSquare.xnb
 Content\Levels\level2.txt
 Content\Levels\level3.txt
 Content\Levels\level1.txt

@@ -35,3 +35,5 @@ C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\blueLines.xnb
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\goldLines.xnb
 C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\purpleLines.xnb
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference.cache
+C:\Users\Cameron\Documents\GitHub\Platformer\Platformer\Platformer\bin\x86\Debug\Content\Images\redSquare.xnb

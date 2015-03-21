@@ -18,6 +18,8 @@ namespace Platformer
     {
         private KeyboardState oldKeyState;
 
+        public bool Airborne;
+
         public Player(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
@@ -32,6 +34,8 @@ namespace Platformer
             Body.BodyType = BodyType.Dynamic;
 
             Body.Friction = 10f;
+
+            Airborne = true;
             
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
@@ -79,7 +83,11 @@ namespace Platformer
             {
                 if (oldKeyState.IsKeyUp(Keys.Up))
                 {
-                    Body.ApplyLinearImpulse(new Vector2(0, -3));
+                    if (!Airborne)
+                    {
+                        Body.ApplyLinearImpulse(new Vector2(0, -4));
+                        Airborne = true;
+                    }
                 }
             }
 

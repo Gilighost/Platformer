@@ -81,7 +81,7 @@
     <Compile Include="Component.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Enemy1.cs" />
-    <Compile Include="enemyTriangle.cs" />
+    <Compile Include="Enemy2.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="Goal.cs" />
     <Compile Include="LevelReader.cs" />

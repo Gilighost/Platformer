@@ -90,6 +90,11 @@ namespace Platformer
                             Component enemyIpod = new Enemy1(new Vector2(j, i));
                             Components.Add(enemyIpod);
                         }
+                        if (levelContent[levelKey][i][j] == 'T')
+                        {
+                            Component enemyTri = new Enemy2(new Vector2(j, i));
+                            Components.Add(enemyTri);
+                        }
                     }
                 }
             }
