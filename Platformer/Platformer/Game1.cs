@@ -54,6 +54,11 @@ namespace Platformer
         //managing player
         private const int STARTING_LIVES = 3;
         private int playerLives;
+        
+
+        //managing time
+        private int timeInLevel;
+        private int lastSecond;
 
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
@@ -91,6 +96,8 @@ namespace Platformer
             levelKey = 1;
             
             playerLives = STARTING_LIVES;
+            timeInLevel = 0;
+            lastSecond = 0;
 
             base.Initialize();
         }
@@ -192,18 +199,15 @@ namespace Platformer
                 }
                 else
                 {
+                    explosion.Activate(fixtureA.Body);
                     if(playerLives > 0)
                     {
                         playerLives--;
-                        LevelReader.Levels.ReadInLevelComponents(world, levelKey);
-                        BuildGameComponents();
+                        resetLevel();
                     }
                     else
                     {
-                        levelKey = 1;
-                        LevelReader.Levels.ReadInLevelComponents(world, levelKey);
-                        BuildGameComponents();
-                        playerLives = STARTING_LIVES;
+                        resetGame();
                     }
                 }
             }
@@ -249,13 +253,11 @@ namespace Platformer
 
             if ((keyBoardState.IsKeyDown(Keys.LeftShift) || keyBoardState.IsKeyDown(Keys.RightShift)) && keyBoardState.IsKeyDown(Keys.R))
             {
-                levelKey = 1;
-                LevelReader.Levels.ReadInLevelComponents(world, levelKey);
-                BuildGameComponents();
+                resetGame();
             }
             if (keyBoardState.IsKeyDown(Keys.R))
             {
-                BuildGameComponents();
+                resetLevel();
             }
 
             lastKeyBoardState = keyBoardState;
@@ -268,6 +270,19 @@ namespace Platformer
             lastMouseState = mouseState;
         }
 
+        private void resetLevel()
+        {
+            timeInLevel = 0;
+            BuildGameComponents();
+        }
+        private void resetGame()
+        {
+            levelKey = 1;
+            playerLives = STARTING_LIVES;
+            LevelReader.Levels.ReadInLevelComponents(world, levelKey);
+            BuildGameComponents();
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -277,6 +292,13 @@ namespace Platformer
         {
             HandleMouseInput();
             HandleKeyPadInput();
+
+            if (lastSecond > gameTime.TotalGameTime.Seconds)
+            {
+                timeInLevel++;
+            }
+
+            lastSecond = gameTime.TotalGameTime.Seconds;
 
             if (LevelReader.Levels.Components != null)
             {
@@ -330,6 +352,18 @@ namespace Platformer
                 spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
                 spriteBatch.DrawString(instructionFont, "By Nathan and Cameron", new Vector2(480, 210), Color.White);
                 spriteBatch.DrawString(startFont, "START ->", new Vector2(800, 265), Color.Yellow);
+            }
+
+            if (LevelReader.Levels.Components != null)
+            {
+                foreach (Component component in LevelReader.Levels.Components)
+                {
+                     component.Draw(spriteBatch);
+                }
+            }
+
+            if (levelKey == 1)
+            {
                 spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.Black);
                 spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.Black);
                 spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.Black);
@@ -340,15 +374,7 @@ namespace Platformer
             }
             else
             {
-
-            }
-
-            if (LevelReader.Levels.Components != null)
-            {
-                foreach (Component component in LevelReader.Levels.Components)
-                {
-                     component.Draw(spriteBatch);
-                }
+                spriteBatch.DrawString(instructionFont, timeInLevel.ToString(), new Vector2(this.Window.ClientBounds.Width / 2, 100), Color.White);
             }
 
             explosion.Draw(spriteBatch, gameTime);
