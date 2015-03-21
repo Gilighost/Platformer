@@ -83,6 +83,7 @@
     <Compile Include="Enemy1.cs" />
     <Compile Include="Enemy2.cs" />
     <Compile Include="Explosion.cs" />
+    <Compile Include="GameTimer.cs" />
     <Compile Include="Goal.cs" />
     <Compile Include="LevelReader.cs" />
     <Compile Include="Player.cs" />

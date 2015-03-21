@@ -54,11 +54,23 @@ namespace Platformer
         //managing player
         private const int STARTING_LIVES = 3;
         private int playerLives;
-        
+
+        private bool gameWon;
 
         //managing time
-        private int timeInLevel;
-        private int lastSecond;
+        GameTimer gameTimer;
+
+        //score
+       
+        private int totalScore;
+        private const int SCORE_MULTIPLIER = 100;
+
+        //sounds
+        private Song backgroundMusic;
+        private bool songStart = false;
+        private SoundEffect playerJump;
+        private SoundEffect playerDie;
+        private SoundEffect enemyDie;
 
         public static float HalfScreenWidth { get; private set; }
         public static float HalfScreenHeight { get; private set; }
@@ -96,8 +108,10 @@ namespace Platformer
             levelKey = 1;
             
             playerLives = STARTING_LIVES;
-            timeInLevel = 0;
-            lastSecond = 0;
+            gameTimer = new GameTimer();
+            gameWon = false;
+  
+            totalScore = 0;
 
             base.Initialize();
         }
@@ -119,7 +133,6 @@ namespace Platformer
             enemy2Texture = Content.Load<Texture2D>(@"Images\redSquare");
 
 
-
             explosionTexture = Content.Load<Texture2D>(@"Images\smoke");
             explosion = new Explosion(explosionTexture);
 
@@ -128,9 +141,17 @@ namespace Platformer
             startFont = Content.Load<SpriteFont>(@"Fonts\startFont");
 
             //backgtound textures from disco-very.net
-            blueLines = Content.Load<Texture2D>(@"Images\blueLines");;
-            purpleLines = Content.Load<Texture2D>(@"Images\purpleLines");;
-            goldLines = Content.Load<Texture2D>(@"Images\goldLines");;
+            blueLines = Content.Load<Texture2D>(@"Images\blueLines");
+            purpleLines = Content.Load<Texture2D>(@"Images\purpleLines");
+            goldLines = Content.Load<Texture2D>(@"Images\goldLines");
+
+            //sounds
+            //https://www.jamendo.com/en/artist/349632/wma
+            backgroundMusic = Content.Load<Song>(@"Sounds\disco");
+            MediaPlayer.IsRepeating = true;
+            playerDie = Content.Load<SoundEffect>(@"Sounds\PlayerKilled");
+            playerJump = Content.Load<SoundEffect>(@"Sounds\PlayerJump");
+            enemyDie = Content.Load<SoundEffect>(@"Sounds\EnemyDie");
 
             LevelReader.Levels.LoadContent(Content, "Levels");
 
@@ -186,12 +207,15 @@ namespace Platformer
                 if (fixtureB.Body.Position.Y > fixtureA.Body.Position.Y + 0.2)
                 {
                     explosion.Activate(fixtureB.Body);
+
+                    enemyDie.Play();
                     
                     fixtureA.Body.ApplyLinearImpulse(new Vector2(0, -3));
                     foreach (Component component in LevelReader.Levels.Components)
                     {
                         if (fixtureB.Body.BodyId == component.Body.BodyId)
                         {
+                           
                             ((Enemy)component).Die();
                         }
                     }
@@ -200,6 +224,7 @@ namespace Platformer
                 else
                 {
                     explosion.Activate(fixtureA.Body);
+                    playerDie.Play();
                     if(playerLives > 0)
                     {
                         playerLives--;
@@ -221,6 +246,7 @@ namespace Platformer
                     {
                         if (((Player)component).Airborne == true)
                         {
+                            playerJump.Play();
                             ((Player)component).Airborne = false;
                         }
                     }
@@ -236,6 +262,16 @@ namespace Platformer
             levelKey++;
             LevelReader.Levels.ReadInLevelComponents(world, levelKey);
             BuildGameComponents();
+
+            totalScore += ((int)gameTimer.timeLeft) * (SCORE_MULTIPLIER * (playerLives + 1));
+
+            gameTimer.resetTimer();
+
+
+            if (levelKey > 4)
+            {
+                gameWon = true;
+            }
         }
 
         /// <summary>
@@ -251,13 +287,39 @@ namespace Platformer
         {
             KeyboardState keyBoardState = Keyboard.GetState();
 
-            if ((keyBoardState.IsKeyDown(Keys.LeftShift) || keyBoardState.IsKeyDown(Keys.RightShift)) && keyBoardState.IsKeyDown(Keys.R))
+            if (gameWon)
             {
-                resetGame();
+                if (keyBoardState.IsKeyDown(Keys.Enter))
+                {
+                    resetGame();
+                }
+                if (keyBoardState.IsKeyDown(Keys.Escape))
+                {
+                    Exit();
+                }
             }
-            if (keyBoardState.IsKeyDown(Keys.R))
+            else
             {
-                resetLevel();
+
+                if ((keyBoardState.IsKeyDown(Keys.LeftShift) || keyBoardState.IsKeyDown(Keys.RightShift)) && keyBoardState.IsKeyDown(Keys.R))
+                {
+                    resetGame();
+                }
+                if (keyBoardState.IsKeyDown(Keys.R))
+                {
+                    resetLevel();
+                }
+                if (keyBoardState.IsKeyDown(Keys.OemQuestion))
+                {
+                    foreach (Component component in LevelReader.Levels.Components)
+                    {
+                        if(component is Enemy)
+                        {
+                            ((Enemy)component).Die();
+                            component.Body.Dispose();
+                        }
+                    }
+                }
             }
 
             lastKeyBoardState = keyBoardState;
@@ -272,15 +334,27 @@ namespace Platformer
 
         private void resetLevel()
         {
-            timeInLevel = 0;
+            gameTimer.resetTimer();
             BuildGameComponents();
+
+            foreach (Component component in LevelReader.Levels.Components)
+            {
+                if (component is Enemy)
+                {
+                    ((Enemy)component).Revive();
+                }
+            }
         }
         private void resetGame()
         {
+            gameWon = false;
             levelKey = 1;
             playerLives = STARTING_LIVES;
             LevelReader.Levels.ReadInLevelComponents(world, levelKey);
             BuildGameComponents();
+          
+            totalScore = 0;
+           
         }
 
         /// <summary>
@@ -290,15 +364,30 @@ namespace Platformer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             HandleMouseInput();
             HandleKeyPadInput();
 
-            if (lastSecond > gameTime.TotalGameTime.Seconds)
+            gameTimer.Update(gameTime);
+
+            if (!songStart)
             {
-                timeInLevel++;
+                MediaPlayer.Play(backgroundMusic);
+                songStart = true;
             }
 
-            lastSecond = gameTime.TotalGameTime.Seconds;
+            if (gameTimer.timeLeft < 0)
+            {
+                playerLives--;
+                if (playerLives >= 0)
+                {
+                    resetLevel();
+                }
+                else
+                {
+                    resetGame();
+                }
+            }
 
             if (LevelReader.Levels.Components != null)
             {
@@ -307,10 +396,10 @@ namespace Platformer
                     component.Update();
 
                     //for parallax
-                    if(component is Player)
+                    if (component is Player)
                     {
                         bgLayer1.X = component.Body.Position.X * -10;
-                        bgLayer2.X = component.Body.Position.X * - 5;
+                        bgLayer2.X = component.Body.Position.X * -5;
                         bgLayer3.X = component.Body.Position.Y * 4;
 
                         bgLayer1.Y = component.Body.Position.Y * 9;
@@ -324,8 +413,10 @@ namespace Platformer
 
             // Allow camera to update
             Camera.Current.Update();
-
+            
+            
             base.Update(gameTime);
+            
         }
 
         /// <summary>
@@ -338,46 +429,59 @@ namespace Platformer
 
             //background
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
-            spriteBatch.Draw(blueLines, new Rectangle((int)bgLayer1.X, (int)bgLayer1.Y, (int)blueLines.Width, (int)blueLines.Width), Color.White);
-            spriteBatch.Draw(purpleLines, new Rectangle((int)bgLayer2.X, (int)bgLayer2.Y, (int)purpleLines.Width, (int)purpleLines.Width), Color.White);
-            spriteBatch.Draw(goldLines, new Rectangle((int)bgLayer3.X, (int)bgLayer3.Y, (int)goldLines.Width, (int)goldLines.Width), Color.White);
-            spriteBatch.End();
-
-            //everything else
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
-                null, Camera.Current.TransformationMatrix);
-
-            if (levelKey == 1)
+            if (gameWon)
             {
-                spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
-                spriteBatch.DrawString(instructionFont, "By Nathan and Cameron", new Vector2(480, 210), Color.White);
-                spriteBatch.DrawString(startFont, "START ->", new Vector2(800, 265), Color.Yellow);
-            }
-
-            if (LevelReader.Levels.Components != null)
-            {
-                foreach (Component component in LevelReader.Levels.Components)
-                {
-                     component.Draw(spriteBatch);
-                }
-            }
-
-            if (levelKey == 1)
-            {
-                spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.Black);
-                spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.Black);
-                spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.Black);
-                spriteBatch.DrawString(instructionFont, "Land on top of enemies to kill them.", new Vector2(360, 440), Color.Black);
-                spriteBatch.DrawString(instructionFont, "Boogie to the end before times up!", new Vector2(360, 470), Color.Black);
-                spriteBatch.DrawString(instructionFont, "R=Restart level, Shift+R=Restart game.", new Vector2(360, 500), Color.Black);
-
+                spriteBatch.DrawString(titleFont, "You got fine moves baby!", new Vector2(18, 50), Color.Yellow);
+                spriteBatch.DrawString(startFont, "Score: " + totalScore.ToString(), new Vector2(200, 150), Color.DeepPink);
+                spriteBatch.DrawString(instructionFont, "Press Enter to play again.", new Vector2(200, 210), Color.White);
+                spriteBatch.DrawString(instructionFont, "Press Escape to exit.", new Vector2(200, 240), Color.White);
             }
             else
             {
-                spriteBatch.DrawString(instructionFont, timeInLevel.ToString(), new Vector2(this.Window.ClientBounds.Width / 2, 100), Color.White);
-            }
+                spriteBatch.Draw(blueLines, new Rectangle((int)bgLayer1.X, (int)bgLayer1.Y, (int)blueLines.Width, (int)blueLines.Width), Color.White);
+                spriteBatch.Draw(purpleLines, new Rectangle((int)bgLayer2.X, (int)bgLayer2.Y, (int)purpleLines.Width, (int)purpleLines.Width), Color.White);
+                spriteBatch.Draw(goldLines, new Rectangle((int)bgLayer3.X, (int)bgLayer3.Y, (int)goldLines.Width, (int)goldLines.Width), Color.White);
+                spriteBatch.End();
 
-            explosion.Draw(spriteBatch, gameTime);
+                //everything else
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
+                    null, Camera.Current.TransformationMatrix);
+
+                if (levelKey == 1)
+                {
+                    spriteBatch.DrawString(titleFont, "DISCO-GO-GO!", new Vector2(460, 150), Color.DeepPink);
+                    spriteBatch.DrawString(instructionFont, "By Nathan and Cameron", new Vector2(480, 210), Color.White);
+                    spriteBatch.DrawString(startFont, "START ->", new Vector2(800, 265), Color.Yellow);
+                }
+
+                if (LevelReader.Levels.Components != null)
+                {
+                    foreach (Component component in LevelReader.Levels.Components)
+                    {
+                        component.Draw(spriteBatch);
+                    }
+                }
+
+                if (levelKey == 1)
+                {
+                    spriteBatch.DrawString(instructionFont, "How to play:", new Vector2(360, 350), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Use the Left and Right arrow keys to move.", new Vector2(360, 380), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Use Up arrow key to jump.", new Vector2(360, 410), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Land on top of enemies to kill them.", new Vector2(360, 440), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Boogie to the end before times up!", new Vector2(360, 470), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "R=Restart level, Shift+R=Restart game.", new Vector2(360, 500), Color.Black);
+
+                }
+                else
+                {
+                    int level = levelKey - 1;
+                    spriteBatch.DrawString(instructionFont, "Time: " + gameTimer.timeLeft.ToString(), new Vector2(Camera.Current.offset.X + 10, Camera.Current.offset.Y + 3), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Lives: " + playerLives, new Vector2(Camera.Current.offset.X + 10, Camera.Current.offset.Y + 25), Color.Black);
+                    spriteBatch.DrawString(instructionFont, "Level: " + level.ToString(), new Vector2(Camera.Current.offset.X + 10, Camera.Current.offset.Y + 47), Color.Black);
+                }
+
+                explosion.Draw(spriteBatch, gameTime);
+            }
 
             spriteBatch.End();
 

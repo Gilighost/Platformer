@@ -16,7 +16,7 @@ namespace Platformer
     class Camera
     {
         // Distance away from the tracking body
-        private Vector2 offset;
+        public Vector2 offset;
 
         // Body to center the camera on
         private Body trackingBody;
@@ -47,16 +47,18 @@ namespace Platformer
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.X) !=
                     halfScreenWidth + offset.X)
                 {
-                    offset.X = MathHelper.Clamp(
+                    offset.X = ConvertUnits.ToDisplayUnits(trackingBody.Position.X) - halfScreenWidth;
+                           /*MathHelper.Clamp(
                         ConvertUnits.ToDisplayUnits(trackingBody.Position.X) -
-                        halfScreenWidth, 0, CenterPointTarget - halfScreenWidth);
+                        halfScreenWidth, 0, CenterPointTarget - halfScreenWidth);*/
                 }
                 if (ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) !=
                     halfScreenHeight + offset.Y)
                 {
-                    offset.Y = MathHelper.Clamp(
-                        ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) -
-                        halfScreenHeight, 0, halfScreenHeight * 2);
+                    offset.Y = ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) -halfScreenHeight;
+                        //MathHelper.Clamp(
+                        //ConvertUnits.ToDisplayUnits(trackingBody.Position.Y) -
+                        //halfScreenHeight, 0, halfScreenHeight * 2);
                 }
             }
 

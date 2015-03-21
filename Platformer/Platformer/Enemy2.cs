@@ -20,9 +20,7 @@ namespace Platformer
     {
         int direction;
 
-        private Shape Shape;
-        public Fixture Fixture { get; protected set; }
-
+       
         public Enemy2(Vector2 coordinates)
         {
             Position = ConvertUnits.ToSimUnits(new Vector2(coordinates.X * 64, coordinates.Y * 64));
