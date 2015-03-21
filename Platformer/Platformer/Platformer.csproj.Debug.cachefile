@@ -9,6 +9,11 @@ Content\Images\blueLines.xnb
 Content\Images\goldLines.xnb
 Content\Images\purpleLines.xnb
 Content\Images\redSquare.xnb
+Content\Sounds\disco.xnb
+Content\Sounds\PlayerKilled.xnb
+Content\Sounds\PlayerJump.xnb
+Content\Sounds\EnemyDie.xnb
+Content\Sounds\disco.wma
 Content\Levels\level2.txt
 Content\Levels\level3.txt
 Content\Levels\level1.txt

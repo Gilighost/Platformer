@@ -22,5 +22,9 @@ namespace Platformer
         {
             isAlive = false;
         }
+        public void Revive()
+        {
+            isAlive = true;
+        }
     }
 }
